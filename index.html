@@ -362,6 +362,15 @@
             font-size: 0.9rem;
         }
 
+        .markup-toolbar select {
+            padding: 8px 10px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            background: var(--color-surface);
+        }
+
         .markup-toolbar button {
             padding: 8px 16px;
             border: 1px solid var(--color-border);
@@ -1042,6 +1051,27 @@
     <div class="correct-overlay" id="correct-overlay" onclick="hideCorrectVersion()">
         <img id="correct-image" src="" alt="Correct version">
         <div class="correct-overlay-hint" id="overlay-hint">Click anywhere to close</div>
+    </div>
+
+    <!-- Markup mode (hidden, activated by ?mode=markup) -->
+    <div class="markup-mode" id="markup-panel">
+        <div class="markup-panel">
+            <div class="markup-toolbar">
+                <label>Урок:</label>
+                <select id="markup-level"></select>
+                <label>Слайд №:</label>
+                <select id="markup-slide"></select>
+                <input type="file" id="markup-file" accept="image/*">
+                <button id="markup-clear">Очистить зоны</button>
+                <button id="markup-export" class="btn-export">Копировать JSON</button>
+            </div>
+            <div class="markup-canvas-wrap" id="markup-canvas">
+                <img id="markup-img" style="display:none" alt="Slide">
+                <p id="markup-empty" class="markup-empty">Выберите урок и загрузите изображение слайда</p>
+            </div>
+            <div class="markup-zones-list" id="markup-zones-list"></div>
+            <textarea class="markup-json-output" id="markup-json" readonly placeholder="JSON зон появится здесь..."></textarea>
+        </div>
     </div>
 
     <script>
@@ -1984,18 +2014,38 @@
         function initMarkupMode() {
             document.body.classList.add('markup-active');
 
-            const panel = document.getElementById('markup-panel');
             const canvas = document.getElementById('markup-canvas');
             const img = document.getElementById('markup-img');
             const fileInput = document.getElementById('markup-file');
             const zonesList = document.getElementById('markup-zones-list');
             const jsonOutput = document.getElementById('markup-json');
+            const levelSelect = document.getElementById('markup-level');
+            const slideSelect = document.getElementById('markup-slide');
 
             let zones = [];
             let drawing = false;
             let startX = 0, startY = 0;
             let drawEl = null;
             let selectedIndex = -1;
+
+            // Populate level selector
+            gameData.levels.forEach((level, i) => {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = `${i + 1}. ${translations.ru.levels[level.titleKey] || level.titleKey}`;
+                levelSelect.appendChild(opt);
+            });
+
+            // Populate slide selector (1–10)
+            for (let i = 1; i <= 10; i++) {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = i;
+                slideSelect.appendChild(opt);
+            }
+
+            levelSelect.addEventListener('change', updateJSON);
+            slideSelect.addEventListener('change', updateJSON);
 
             fileInput.addEventListener('change', (e) => {
                 const file = e.target.files[0];
@@ -2107,11 +2157,21 @@
             }
 
             function updateJSON() {
-                const data = zones.map(z => ({
-                    x: z.x, y: z.y, width: z.width, height: z.height,
-                    tipRu: z.tipRu, tipEn: z.tipEn
-                }));
-                jsonOutput.value = JSON.stringify(data, null, 4);
+                const levelIdx = parseInt(levelSelect.value);
+                const level = gameData.levels[levelIdx];
+                const slideNum = parseInt(slideSelect.value);
+                const levelId = level.id;
+
+                const output = {
+                    _comment: `${translations.ru.levels[level.titleKey]} — слайд ${slideNum}`,
+                    image: `slides/${levelId}_${slideNum}.jpg`,
+                    correctImage: `slides/${levelId}_${slideNum}_correct.jpg`,
+                    zones: zones.map(z => ({
+                        x: z.x, y: z.y, width: z.width, height: z.height,
+                        tipRu: z.tipRu, tipEn: z.tipEn
+                    }))
+                };
+                jsonOutput.value = JSON.stringify(output, null, 4);
             }
 
             // Expose helpers for inline handlers
@@ -2140,22 +2200,5 @@
         init();
     </script>
 
-    <!-- Markup mode (hidden, activated by ?mode=markup) -->
-    <div class="markup-mode" id="markup-panel">
-        <div class="markup-panel">
-            <div class="markup-toolbar">
-                <label>Загрузить слайд:</label>
-                <input type="file" id="markup-file" accept="image/*">
-                <button id="markup-clear">Очистить все зоны</button>
-                <button id="markup-export" class="btn-export">Копировать JSON</button>
-            </div>
-            <div class="markup-canvas-wrap" id="markup-canvas">
-                <img id="markup-img" style="display:none" alt="Slide">
-                <p id="markup-empty" class="markup-empty">Загрузите изображение слайда, чтобы начать разметку</p>
-            </div>
-            <div class="markup-zones-list" id="markup-zones-list"></div>
-            <textarea class="markup-json-output" id="markup-json" readonly placeholder="JSON зон появится здесь..."></textarea>
-        </div>
-    </div>
 </body>
 </html>
