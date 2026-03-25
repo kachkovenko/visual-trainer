@@ -335,6 +335,192 @@
             100% { transform: translate(-50%, -50%) scale(1); }
         }
 
+        /* ========== MARKUP MODE (hidden, ?mode=markup) ========== */
+        .markup-mode { display: none; }
+        body.markup-active .markup-mode { display: block; }
+        body.markup-active .container { display: none; }
+
+        .markup-panel {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .markup-toolbar {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .markup-toolbar label {
+            font-weight: 600;
+        }
+
+        .markup-toolbar input[type="file"] {
+            font-size: 0.9rem;
+        }
+
+        .markup-toolbar button {
+            padding: 8px 16px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            background: var(--color-surface);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .markup-toolbar button:hover {
+            background: var(--color-background);
+        }
+
+        .markup-toolbar .btn-export {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .markup-toolbar .btn-export:hover {
+            opacity: 0.9;
+        }
+
+        .markup-canvas-wrap {
+            position: relative;
+            background: var(--color-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            cursor: crosshair;
+            user-select: none;
+        }
+
+        .markup-canvas-wrap img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .markup-rect {
+            position: absolute;
+            border: 2px solid #ef4444;
+            background: rgba(239, 68, 68, 0.15);
+            pointer-events: none;
+        }
+
+        .markup-rect .markup-rect-label {
+            position: absolute;
+            top: -22px;
+            left: -2px;
+            background: #ef4444;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 3px 3px 0 0;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        .markup-rect.selected {
+            border-color: var(--color-accent);
+            background: rgba(59, 130, 246, 0.15);
+        }
+
+        .markup-rect.selected .markup-rect-label {
+            background: var(--color-accent);
+        }
+
+        .markup-drawing {
+            position: absolute;
+            border: 2px dashed #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+            pointer-events: none;
+        }
+
+        .markup-zones-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .markup-zone-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 12px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+        }
+
+        .markup-zone-item.selected {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+
+        .markup-zone-num {
+            font-weight: 700;
+            font-size: 1.1rem;
+            min-width: 24px;
+            padding-top: 6px;
+        }
+
+        .markup-zone-fields {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .markup-zone-fields input,
+        .markup-zone-fields textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            resize: vertical;
+        }
+
+        .markup-zone-fields textarea {
+            min-height: 48px;
+        }
+
+        .markup-zone-coords {
+            font-size: 0.75rem;
+            color: var(--color-text-light);
+        }
+
+        .markup-zone-delete {
+            background: none;
+            border: none;
+            color: var(--color-incorrect);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 6px;
+        }
+
+        .markup-json-output {
+            width: 100%;
+            min-height: 200px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            padding: 12px;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            background: var(--color-surface);
+            margin-top: 16px;
+        }
+
+        .markup-empty {
+            text-align: center;
+            color: var(--color-text-light);
+            padding: 40px;
+            font-size: 1.1rem;
+        }
+
         /* Problem zone highlight (shown after check) */
         .zone-highlight {
             position: absolute;
@@ -1787,9 +1973,189 @@
                 currentLang = progress.lang;
             }
             hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding') === 'true';
+
+            // Activate markup mode if ?mode=markup
+            if (new URLSearchParams(window.location.search).get('mode') === 'markup') {
+                initMarkupMode();
+            }
+        }
+
+        // ========== MARKUP MODE ==========
+        function initMarkupMode() {
+            document.body.classList.add('markup-active');
+
+            const panel = document.getElementById('markup-panel');
+            const canvas = document.getElementById('markup-canvas');
+            const img = document.getElementById('markup-img');
+            const fileInput = document.getElementById('markup-file');
+            const zonesList = document.getElementById('markup-zones-list');
+            const jsonOutput = document.getElementById('markup-json');
+
+            let zones = [];
+            let drawing = false;
+            let startX = 0, startY = 0;
+            let drawEl = null;
+            let selectedIndex = -1;
+
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const url = URL.createObjectURL(file);
+                img.src = url;
+                img.style.display = 'block';
+                document.getElementById('markup-empty').style.display = 'none';
+                zones = [];
+                selectedIndex = -1;
+                renderZones();
+                updateJSON();
+            });
+
+            function getPercent(e) {
+                const rect = canvas.getBoundingClientRect();
+                return {
+                    x: ((e.clientX - rect.left) / rect.width) * 100,
+                    y: ((e.clientY - rect.top) / rect.height) * 100
+                };
+            }
+
+            canvas.addEventListener('mousedown', (e) => {
+                if (!img.src || e.target.closest('.markup-rect-label')) return;
+                const p = getPercent(e);
+                startX = p.x;
+                startY = p.y;
+                drawing = true;
+                drawEl = document.createElement('div');
+                drawEl.className = 'markup-drawing';
+                canvas.appendChild(drawEl);
+            });
+
+            canvas.addEventListener('mousemove', (e) => {
+                if (!drawing || !drawEl) return;
+                const p = getPercent(e);
+                const x = Math.min(startX, p.x);
+                const y = Math.min(startY, p.y);
+                const w = Math.abs(p.x - startX);
+                const h = Math.abs(p.y - startY);
+                drawEl.style.left = x + '%';
+                drawEl.style.top = y + '%';
+                drawEl.style.width = w + '%';
+                drawEl.style.height = h + '%';
+            });
+
+            canvas.addEventListener('mouseup', (e) => {
+                if (!drawing) return;
+                drawing = false;
+                if (drawEl) drawEl.remove();
+                drawEl = null;
+
+                const p = getPercent(e);
+                const x = Math.round(Math.min(startX, p.x) * 10) / 10;
+                const y = Math.round(Math.min(startY, p.y) * 10) / 10;
+                const w = Math.round(Math.abs(p.x - startX) * 10) / 10;
+                const h = Math.round(Math.abs(p.y - startY) * 10) / 10;
+
+                if (w < 1 || h < 1) return; // ignore tiny clicks
+
+                zones.push({ x, y, width: w, height: h, tipRu: '', tipEn: '' });
+                selectedIndex = zones.length - 1;
+                renderZones();
+                updateJSON();
+            });
+
+            function selectZone(i) {
+                selectedIndex = i;
+                renderZones();
+            }
+
+            function deleteZone(i) {
+                zones.splice(i, 1);
+                if (selectedIndex >= zones.length) selectedIndex = zones.length - 1;
+                renderZones();
+                updateJSON();
+            }
+
+            function renderZones() {
+                // Render rectangles on image
+                canvas.querySelectorAll('.markup-rect').forEach(el => el.remove());
+                zones.forEach((z, i) => {
+                    const el = document.createElement('div');
+                    el.className = 'markup-rect' + (i === selectedIndex ? ' selected' : '');
+                    el.style.left = z.x + '%';
+                    el.style.top = z.y + '%';
+                    el.style.width = z.width + '%';
+                    el.style.height = z.height + '%';
+                    const label = document.createElement('span');
+                    label.className = 'markup-rect-label';
+                    label.textContent = i + 1;
+                    label.onclick = (e) => { e.stopPropagation(); selectZone(i); };
+                    el.appendChild(label);
+                    canvas.appendChild(el);
+                });
+
+                // Render zones list
+                zonesList.innerHTML = zones.map((z, i) => `
+                    <div class="markup-zone-item ${i === selectedIndex ? 'selected' : ''}" onclick="window._markupSelect(${i})">
+                        <span class="markup-zone-num">${i + 1}</span>
+                        <div class="markup-zone-fields">
+                            <textarea placeholder="Описание ошибки (RU)" oninput="window._markupUpdate(${i},'tipRu',this.value)">${z.tipRu}</textarea>
+                            <input type="text" placeholder="Error description (EN)" oninput="window._markupUpdate(${i},'tipEn',this.value)" value="${z.tipEn.replace(/"/g, '&quot;')}">
+                            <span class="markup-zone-coords">x: ${z.x}% &nbsp; y: ${z.y}% &nbsp; w: ${z.width}% &nbsp; h: ${z.height}%</span>
+                        </div>
+                        <button class="markup-zone-delete" onclick="event.stopPropagation(); window._markupDelete(${i})" title="Удалить">✕</button>
+                    </div>
+                `).join('');
+            }
+
+            function updateJSON() {
+                const data = zones.map(z => ({
+                    x: z.x, y: z.y, width: z.width, height: z.height,
+                    tipRu: z.tipRu, tipEn: z.tipEn
+                }));
+                jsonOutput.value = JSON.stringify(data, null, 4);
+            }
+
+            // Expose helpers for inline handlers
+            window._markupSelect = (i) => { selectedIndex = i; renderZones(); };
+            window._markupUpdate = (i, field, val) => { zones[i][field] = val; updateJSON(); };
+            window._markupDelete = deleteZone;
+
+            document.getElementById('markup-export').addEventListener('click', () => {
+                jsonOutput.select();
+                navigator.clipboard.writeText(jsonOutput.value).then(() => {
+                    const btn = document.getElementById('markup-export');
+                    const orig = btn.textContent;
+                    btn.textContent = 'Скопировано!';
+                    setTimeout(() => btn.textContent = orig, 1500);
+                });
+            });
+
+            document.getElementById('markup-clear').addEventListener('click', () => {
+                zones = [];
+                selectedIndex = -1;
+                renderZones();
+                updateJSON();
+            });
         }
 
         init();
     </script>
+
+    <!-- Markup mode (hidden, activated by ?mode=markup) -->
+    <div class="markup-mode" id="markup-panel">
+        <div class="markup-panel">
+            <div class="markup-toolbar">
+                <label>Загрузить слайд:</label>
+                <input type="file" id="markup-file" accept="image/*">
+                <button id="markup-clear">Очистить все зоны</button>
+                <button id="markup-export" class="btn-export">Копировать JSON</button>
+            </div>
+            <div class="markup-canvas-wrap" id="markup-canvas">
+                <img id="markup-img" style="display:none" alt="Slide">
+                <p id="markup-empty" class="markup-empty">Загрузите изображение слайда, чтобы начать разметку</p>
+            </div>
+            <div class="markup-zones-list" id="markup-zones-list"></div>
+            <textarea class="markup-json-output" id="markup-json" readonly placeholder="JSON зон появится здесь..."></textarea>
+        </div>
+    </div>
 </body>
 </html>
