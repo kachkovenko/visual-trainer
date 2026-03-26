@@ -1066,7 +1066,7 @@
                 <button id="markup-export" class="btn-export">Копировать JSON</button>
             </div>
             <div class="markup-canvas-wrap" id="markup-canvas">
-                <img id="markup-img" style="display:none" alt="Slide">
+                <img id="markup-img" style="display:none" alt="Slide" draggable="false">
                 <p id="markup-empty" class="markup-empty">Выберите урок и загрузите изображение слайда</p>
             </div>
             <div class="markup-zones-list" id="markup-zones-list"></div>
@@ -2070,6 +2070,7 @@
 
             canvas.addEventListener('mousedown', (e) => {
                 if (!img.src || e.target.closest('.markup-rect-label')) return;
+                e.preventDefault();
                 const p = getPercent(e);
                 startX = p.x;
                 startY = p.y;
