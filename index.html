@@ -2114,6 +2114,7 @@
             });
 
             function selectZone(i) {
+                if (selectedIndex === i) return;
                 selectedIndex = i;
                 renderZones();
             }
@@ -2148,8 +2149,8 @@
                     <div class="markup-zone-item ${i === selectedIndex ? 'selected' : ''}" onclick="window._markupSelect(${i})">
                         <span class="markup-zone-num">${i + 1}</span>
                         <div class="markup-zone-fields">
-                            <textarea placeholder="Описание ошибки (RU)" oninput="window._markupUpdate(${i},'tipRu',this.value)">${z.tipRu}</textarea>
-                            <input type="text" placeholder="Error description (EN)" oninput="window._markupUpdate(${i},'tipEn',this.value)" value="${z.tipEn.replace(/"/g, '&quot;')}">
+                            <textarea placeholder="Описание ошибки (RU)" onclick="event.stopPropagation()" oninput="window._markupUpdate(${i},'tipRu',this.value)">${z.tipRu}</textarea>
+                            <input type="text" placeholder="Error description (EN)" onclick="event.stopPropagation()" oninput="window._markupUpdate(${i},'tipEn',this.value)" value="${z.tipEn.replace(/"/g, '&quot;')}">
                             <span class="markup-zone-coords">x: ${z.x}% &nbsp; y: ${z.y}% &nbsp; w: ${z.width}% &nbsp; h: ${z.height}%</span>
                         </div>
                         <button class="markup-zone-delete" onclick="event.stopPropagation(); window._markupDelete(${i})" title="Удалить">✕</button>
