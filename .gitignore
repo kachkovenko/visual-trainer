@@ -1,7 +1,7 @@
-# Screenshots
-*.png
-*.jpg
-*.jpeg
+# Screenshots (root only)
+/*.png
+/*.jpg
+/*.jpeg
 
 # macOS
 .DS_Store

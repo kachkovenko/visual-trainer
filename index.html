@@ -1199,28 +1199,42 @@
                     titleKey: "alignment",
                     slides: [
                         {
-                            image: "slides/alignment_1.jpg",
-                            correctImage: "slides/alignment_1_correct.jpg",
+                            image: "slides/1_1.jpg",
+                            correctImage: "slides/1_1_correct.jpg",
                             zones: [
-                                { x: 10, y: 15, width: 15, height: 10, tipEn: "The title is not aligned with the body text. Keep consistent left margins.", tipRu: "Заголовок не выровнен с основным текстом. Соблюдайте одинаковые отступы слева." },
-                                { x: 50, y: 40, width: 20, height: 15, tipEn: "These elements have inconsistent spacing. Use equal gaps between items.", tipRu: "У этих элементов разные отступы. Используйте одинаковые промежутки между элементами." },
-                                { x: 75, y: 70, width: 18, height: 12, tipEn: "The image is not aligned to the grid. Snap it to the nearest guide.", tipRu: "Изображение не выровнено по сетке. Привяжите его к ближайшей направляющей." }
+                                { x: 60, y: 17.5, width: 8.5, height: 64.2, tipRu: "Заголовок и контент под ним не выровнены между собой по левому краю, хотя все элементы имеют левое выравнивание", tipEn: "The heading and the content below it are not left-aligned with each other, even though all elements use left alignment" },
+                                { x: 93.1, y: 18.3, width: 7.1, height: 63.1, tipRu: "Контент расположен слишком близко к краю слайда. Всегда соблюдайте поля слайда и пользуйтесь направляющими!", tipEn: "The content is placed too close to the edge of the slide. Always respect slide margins and use guides!" }
                             ]
                         },
                         {
-                            image: "slides/alignment_2.jpg",
-                            correctImage: "slides/alignment_2_correct.jpg",
+                            image: "slides/1_2.jpg",
+                            correctImage: "slides/1_2_correct.jpg",
                             zones: [
-                                { x: 20, y: 30, width: 25, height: 20, tipEn: "Text blocks should align on a common baseline.", tipRu: "Текстовые блоки должны быть выровнены по общей базовой линии." },
-                                { x: 60, y: 55, width: 15, height: 18, tipEn: "This icon is vertically misaligned with its label.", tipRu: "Эта иконка не выровнена по вертикали с подписью." }
+                                { x: 4.7, y: 22.5, width: 82.1, height: 9.4, tipRu: "Текстовые блоки не выровнены по верхнему краю", tipEn: "The text blocks are not aligned along the top edge" },
+                                { x: 25.9, y: 65.3, width: 5.2, height: 24.7, group: 1, tipRu: "Разное расстояние между одинаковыми карточками", tipEn: "Uneven spacing between identical cards" },
+                                { x: 50.2, y: 65, width: 4.1, height: 25.2, group: 1 },
+                                { x: 73, y: 64.5, width: 4.8, height: 25.2, group: 1 },
+                                { x: 95.7, y: 64.3, width: 4.1, height: 25.9, tipRu: "Объект слишком близко к краю слайда", tipEn: "The object is too close to the edge of the slide" }
                             ]
                         },
                         {
-                            image: "slides/alignment_3.jpg",
-                            correctImage: "slides/alignment_3_correct.jpg",
+                            image: "slides/1_3.jpg",
+                            correctImage: "slides/1_3_correct.jpg",
                             zones: [
-                                { x: 15, y: 20, width: 30, height: 15, tipEn: "Center-aligned text works poorly for long paragraphs. Use left alignment.", tipRu: "Выравнивание по центру плохо работает для длинных абзацев. Используйте выравнивание по левому краю." },
-                                { x: 55, y: 65, width: 20, height: 10, tipEn: "Button is not centered relative to the content above.", tipRu: "Кнопка не отцентрирована относительно контента выше." }
+                                { x: 17.1, y: 6.3, width: 60.5, height: 27.2, tipRu: "Заголовок смещён влево, хотя в данном случае должен быть выровнен по центру слайда", tipEn: "The heading is shifted to the left, whereas in this case it should be centered on the slide" },
+                                { x: -1.2, y: 32, width: 7.4, height: 33.5, tipRu: "Текст расположен слишком близко к краю слайда", tipEn: "The text is placed too close to the edge of the slide" },
+                                { x: 77.8, y: 44.2, width: 17.2, height: 10.8, tipRu: "Подпись под цифрой расположена ниже, чем в других аналогичных случаях", tipEn: "The caption under the number is positioned lower than in other similar cases" },
+                                { x: 96.3, y: 37.3, width: 3.9, height: 29.3, tipRu: "Текст расположен слишком близко к краю слайда", tipEn: "The text is placed too close to the edge of the slide" }
+                            ]
+                        },
+                        {
+                            image: "slides/1_4.jpg",
+                            correctImage: "slides/1_4_correct.jpg",
+                            zones: [
+                                { x: 51.2, y: 41, width: 21.5, height: 12.7, tipRu: "Текст этого блока смещён ниже остальных", tipEn: "The text in this block is shifted lower than the rest" },
+                                { x: 48.3, y: 23, width: 3.5, height: 58.6, tipRu: "Разное расстояние между одинаковыми карточками", tipEn: "Uneven spacing between identical cards" },
+                                { x: 27.3, y: 42.9, width: 5.7, height: 35.9, tipRu: "Текстовые блоки не выровнены между собой, а их отступ от левого края карточки отличается от других карточек", tipEn: "The text blocks are not aligned with each other, and their left margin differs from that of the other cards" },
+                                { x: 73.2, y: 42.4, width: 4.1, height: 37.4, tipRu: "Расстояние между краем фигуры и текстом больше, чем на других карточках", tipEn: "The spacing between the shape edge and the text is larger than on the other cards" }
                             ]
                         }
                     ]
@@ -2209,8 +2223,8 @@
 
                 const output = {
                     _comment: `${translations.ru.levels[level.titleKey]} — слайд ${slideNum}`,
-                    image: `slides/${levelId}_${slideNum}.jpg`,
-                    correctImage: `slides/${levelId}_${slideNum}_correct.jpg`,
+                    image: `slides/${levelIdx + 1}_${slideNum}.jpg`,
+                    correctImage: `slides/${levelIdx + 1}_${slideNum}_correct.jpg`,
                     zones: zones.map(z => {
                         const entry = { x: z.x, y: z.y, width: z.width, height: z.height };
                         if (z.group != null) entry.group = z.group;
