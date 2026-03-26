@@ -1463,6 +1463,32 @@
             return t('findMistakes').replace('{n}', n).replace('{plural}', form);
         }
 
+        // Count unique errors: each group = 1 error, each ungrouped zone = 1 error
+        function countUniqueErrors(zones) {
+            const groups = new Set();
+            let count = 0;
+            zones.forEach(z => {
+                if (z.group != null) {
+                    if (!groups.has(z.group)) { groups.add(z.group); count++; }
+                } else {
+                    count++;
+                }
+            });
+            return count;
+        }
+
+        // Get unique error entries for display (one per group, all ungrouped)
+        function getUniqueErrors(zones) {
+            const seen = new Set();
+            return zones.filter((z, i) => {
+                if (z.group != null) {
+                    if (seen.has(z.group)) return false;
+                    seen.add(z.group);
+                }
+                return true;
+            });
+        }
+
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
@@ -1586,7 +1612,7 @@
             document.getElementById('game-level-info').textContent =
                 `${t('slide')} ${currentSlide + 1}/${level.slides.length}: ${t(`levels.${level.titleKey}`)}`;
             document.getElementById('game-hint').textContent =
-                getMistakesHintText(slide.zones.length);
+                getMistakesHintText(countUniqueErrors(slide.zones));
 
             // Reset state
             foundZones = [];
@@ -1712,6 +1738,14 @@
 
             if (hitZone !== null) {
                 foundZones.push(hitZoneIndex);
+                // If zone belongs to a group, mark all zones in that group as found
+                if (hitZone.group != null) {
+                    slide.zones.forEach((z, idx) => {
+                        if (z.group === hitZone.group && !foundZones.includes(idx)) {
+                            foundZones.push(idx);
+                        }
+                    });
+                }
                 clickMarkers.push({ element: marker, correct: true, zoneIndex: hitZoneIndex });
             } else {
                 clickMarkers.push({ element: marker, correct: false, x: xPercent, y: yPercent });
@@ -1731,9 +1765,11 @@
             const slide = gameData.levels[currentLevel].slides[currentSlide];
             const wrapper = document.getElementById('slide-wrapper');
 
-            // Calculate score for this slide
-            const pointsPerZone = 10;
-            levelScore += foundZones.length * pointsPerZone;
+            // Calculate score per unique error (not per zone)
+            const pointsPerError = 10;
+            const uniqueErrors = countUniqueErrors(slide.zones);
+            const foundErrors = countUniqueErrors(slide.zones.filter((z, i) => foundZones.includes(i)));
+            levelScore += foundErrors * pointsPerError;
 
             // Reveal all markers (change from neutral to correct/incorrect)
             clickMarkers.forEach(markerData => {
@@ -1763,14 +1799,18 @@
                 wrapper.appendChild(highlight);
             });
 
-            // Show tips
+            // Show tips (one per unique error)
             const tipsContent = document.getElementById('tips-content');
-            tipsContent.innerHTML = slide.zones.map((zone, index) => {
+            const uniqueZones = getUniqueErrors(slide.zones);
+            let errorNum = 0;
+            tipsContent.innerHTML = uniqueZones.map((zone) => {
+                errorNum++;
                 const tip = currentLang === 'ru' ? zone.tipRu : zone.tipEn;
-                const found = foundZones.includes(index);
+                const zoneIdx = slide.zones.indexOf(zone);
+                const found = foundZones.includes(zoneIdx);
                 return `
                     <div class="tip-item ${found ? '' : 'missed'}">
-                        <strong>${found ? '✓ ' + t('found') : '✗ ' + t('missed')}: Zone ${index + 1}</strong>
+                        <strong>${found ? '✓ ' + t('found') : '✗ ' + t('missed')}: Zone ${errorNum}</strong>
                         ${tip}
                     </div>
                 `;
@@ -2107,7 +2147,7 @@
 
                 if (w < 1 || h < 1) return; // ignore tiny clicks
 
-                zones.push({ x, y, width: w, height: h, tipRu: '', tipEn: '' });
+                zones.push({ x, y, width: w, height: h, group: null, tipRu: '', tipEn: '' });
                 selectedIndex = zones.length - 1;
                 renderZones();
                 updateJSON();
@@ -2149,7 +2189,10 @@
                     <div class="markup-zone-item ${i === selectedIndex ? 'selected' : ''}" onclick="window._markupSelect(${i})">
                         <span class="markup-zone-num">${i + 1}</span>
                         <div class="markup-zone-fields">
-                            <textarea placeholder="Описание ошибки (RU)" onclick="event.stopPropagation()" oninput="window._markupUpdate(${i},'tipRu',this.value)">${z.tipRu}</textarea>
+                            <div style="display:flex;gap:8px;align-items:center">
+                                <textarea style="flex:1" placeholder="Описание ошибки (RU)" onclick="event.stopPropagation()" oninput="window._markupUpdate(${i},'tipRu',this.value)">${z.tipRu}</textarea>
+                                <label style="font-size:0.8rem;white-space:nowrap" onclick="event.stopPropagation()">Группа: <input type="number" min="1" style="width:50px;padding:4px;border:1px solid var(--color-border);border-radius:4px" value="${z.group || ''}" oninput="window._markupUpdate(${i},'group',this.value ? parseInt(this.value) : null)" onclick="event.stopPropagation()"></label>
+                            </div>
                             <input type="text" placeholder="Error description (EN)" onclick="event.stopPropagation()" oninput="window._markupUpdate(${i},'tipEn',this.value)" value="${z.tipEn.replace(/"/g, '&quot;')}">
                             <span class="markup-zone-coords">x: ${z.x}% &nbsp; y: ${z.y}% &nbsp; w: ${z.width}% &nbsp; h: ${z.height}%</span>
                         </div>
@@ -2168,10 +2211,13 @@
                     _comment: `${translations.ru.levels[level.titleKey]} — слайд ${slideNum}`,
                     image: `slides/${levelId}_${slideNum}.jpg`,
                     correctImage: `slides/${levelId}_${slideNum}_correct.jpg`,
-                    zones: zones.map(z => ({
-                        x: z.x, y: z.y, width: z.width, height: z.height,
-                        tipRu: z.tipRu, tipEn: z.tipEn
-                    }))
+                    zones: zones.map(z => {
+                        const entry = { x: z.x, y: z.y, width: z.width, height: z.height };
+                        if (z.group != null) entry.group = z.group;
+                        entry.tipRu = z.tipRu;
+                        entry.tipEn = z.tipEn;
+                        return entry;
+                    })
                 };
                 jsonOutput.value = JSON.stringify(output, null, 4);
             }
