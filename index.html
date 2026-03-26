@@ -2093,7 +2093,7 @@
                 drawEl.style.height = h + '%';
             });
 
-            canvas.addEventListener('mouseup', (e) => {
+            document.addEventListener('mouseup', (e) => {
                 if (!drawing) return;
                 drawing = false;
                 if (drawEl) drawEl.remove();
