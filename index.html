@@ -3,22 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Test how well you notice visual flaws in presentations. 5 levels covering alignment, composition, typography, graphics, and data visualization.">
+    <meta property="og:title" content="Visual Perception Trainer">
+    <meta property="og:description" content="Test how well you notice visual flaws in presentations">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="img/hero-bg.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Visual Perception Trainer">
+    <meta name="twitter:description" content="Test how well you notice visual flaws in presentations">
     <title>Visual Perception Trainer</title>
-    <link href="https://db.onlinewebfonts.com/c/e67d454812dd994a6a0d066384080946?family=Tilda+Sans+VF" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         /* ========== COLOR VARIABLES (easy to change) ========== */
         :root {
-            --color-primary: #1a1a1a;
+            --color-primary: #273043;
             --color-secondary: #333333;
-            --color-background: #f5f5f5;
+            --color-background: #EEF1F6;
             --color-surface: #ffffff;
-            --color-text: #1a1a1a;
+            --color-text: #273043;
             --color-text-light: #666666;
             --color-border: #e0e0e0;
             --color-correct: #22c55e;
             --color-incorrect: #ef4444;
             --color-accent: #3b82f6;
             --color-locked: #9ca3af;
+            --page-padding: 56px;
         }
 
         /* ========== RESET & BASE ========== */
@@ -29,28 +38,183 @@
         }
 
         html, body {
-            width: 100vw;
-            max-width: 100vw;
+            width: 100%;
             overflow-x: hidden;
         }
 
         body {
-            font-family: 'Tilda Sans VF', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: var(--color-background);
             color: var(--color-text);
-            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ========== PAGE LAYOUT ========== */
+        .page-layout {
             display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            width: 100%;
+            padding: 0 var(--page-padding);
+        }
+
+        /* ========== SITE HEADER ========== */
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+            flex-shrink: 0;
+        }
+
+        .logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-link svg {
+            height: 25px;
+            width: auto;
+        }
+
+        .lang-switcher {
+            display: flex;
+            gap: 4px;
+        }
+
+        .lang-flag {
+            background: none;
+            border: 1px solid transparent;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            padding: 0;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: inherit;
+            font-weight: 500;
+            color: var(--color-text-light);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
             justify-content: center;
+        }
+
+        .lang-flag:hover {
+            color: #273043;
+        }
+
+        .lang-flag.active {
+            color: #273043;
+            border-color: #273043;
+            background: #ffffff;
+        }
+
+        /* ========== MAIN CARD ========== */
+        .main-card {
+            flex: 1;
+            background: var(--color-surface);
+            border-radius: 24px;
+            overflow-y: auto;
+            min-height: 0;
+            display: flex;
             align-items: center;
         }
 
+        .main-card > .container {
+            width: 100%;
+        }
+
+        .main-card:has(.levels-screen.active) {
+            background: transparent;
+            border-radius: 0;
+            overflow: visible;
+            align-items: stretch;
+        }
+
+        .main-card:has(.levels-screen.active) > .container {
+            padding: 0;
+            max-width: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-card:has(.levels-screen.active) .levels-screen {
+            flex: 1;
+        }
+
+        .main-card:has(.game-screen.active) {
+            align-items: stretch;
+            border-radius: 0;
+            background: transparent;
+            overflow: visible;
+        }
+
+        .main-card:has(.game-screen.active) > .container {
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            max-width: none;
+        }
+
+        /* ========== SITE FOOTER ========== */
+        .site-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+            flex-shrink: 0;
+            font-size: 16px;
+            color: #273043;
+        }
+
+        .footer-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-right span {
+            margin-right: 8px;
+        }
+
+        .footer-right a {
+            color: #273043;
+            text-decoration: none;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-right a:hover {
+            color: var(--color-text);
+        }
+
+        .footer-right svg {
+            width: 36px;
+            height: 36px;
+        }
+
         /* ========== CONTAINER ========== */
-        /* Break out of Tilda container constraints */
         .container {
-            width: 95vw;
             max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
             box-sizing: border-box;
+        }
+
+        @media (max-width: 960px) {
+            :root { --page-padding: 24px; }
+            .main-card { border-radius: 16px; }
+        }
+
+        @media (max-width: 640px) {
+            :root { --page-padding: 10px; }
+            .site-header { height: 60px; }
+            .site-footer { height: 48px; font-size: 0.75rem; }
+            .main-card { border-radius: 12px; }
         }
 
         /* ========== SCREENS ========== */
@@ -63,213 +227,444 @@
             display: block;
         }
 
+        .levels-screen.active {
+            display: flex;
+        }
+
+        .game-screen.active {
+            display: flex;
+            flex: 1;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ========== LANGUAGE SELECTION ========== */
-        .language-screen {
-            text-align: center;
-            padding: 60px 20px;
-        }
-
-        .language-screen h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: var(--color-primary);
-        }
-
-        .language-screen p {
-            font-size: 1.1rem;
-            color: var(--color-text-light);
-            margin-bottom: 3rem;
-        }
-
-        .language-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .lang-btn {
-            padding: 20px 50px;
-            font-size: 1.2rem;
-            border: 2px solid var(--color-primary);
-            background: var(--color-surface);
-            color: var(--color-primary);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border-radius: 8px;
-            font-family: inherit;
-        }
-
-        .lang-btn:hover {
-            background: var(--color-primary);
-            color: var(--color-surface);
-        }
-
-        /* ========== LEVEL SELECTION ========== */
+        /* ========== WELCOME & LEVEL SELECTION ========== */
         .levels-screen {
-            padding: 40px 20px;
+            padding: 0;
         }
 
-        .levels-header {
-            text-align: center;
-            margin-bottom: 40px;
+        .welcome-layout {
+            display: grid;
+            grid-template-columns: 9fr minmax(320px, 3fr);
+            gap: 12px;
+            flex: 1;
+            min-height: 0;
         }
 
-        .levels-header h2 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .levels-grid {
+        .welcome-left {
+            background-color: #151929;
+            background-image: url('img/hero-bg.jpg');
+            background-size: cover;
+            background-position: top center;
+            border-radius: 24px;
+            padding: 48px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            max-width: 900px;
-            margin: 0 auto;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: flex-start;
+            min-height: 500px;
         }
 
-        .level-card {
-            background: var(--color-surface);
-            border: 2px solid var(--color-border);
-            border-radius: 12px;
-            padding: 30px 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-            width: 280px;
+        .welcome-left-content {
+            max-width: 620px;
         }
 
-        .level-card:not(.locked):hover {
-            border-color: var(--color-primary);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        .welcome-badge {
+            display: inline-block;
+            border: 1px solid #ffffff;
+            border-radius: 10px;
+            padding: 8px 18px;
+            font-size: 16px;
+            font-weight: 400;
+            letter-spacing: 0.08em;
+            color: #ffffff;
+            margin-bottom: 24px;
+            text-transform: uppercase;
         }
 
-        .level-card.locked {
-            opacity: 0.6;
-            cursor: not-allowed;
+        .welcome-title {
+            font-size: 80px;
+            font-weight: 500;
+            line-height: 1.05;
+            margin-bottom: 24px;
+            color: #ffffff;
+            margin-left: -5px;
         }
 
-        .level-card.completed {
-            border-color: var(--color-correct);
+        .welcome-subtitle {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #ffffff;
+            margin-bottom: 36px;
+            font-weight: 400;
         }
 
-        .level-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--color-primary);
-            margin-bottom: 10px;
+        .instructions-section {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 44px;
         }
 
-        .level-card.locked .level-number {
-            color: var(--color-locked);
+        .instruction-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
         }
 
-        .level-title {
-            font-size: 1.1rem;
-            color: var(--color-text);
-            margin-bottom: 10px;
-        }
-
-        .level-status {
-            font-size: 0.85rem;
-            color: var(--color-text-light);
-        }
-
-        .level-card.completed .level-status {
-            color: var(--color-correct);
-        }
-
-        .lock-icon {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            color: var(--color-locked);
+        .step-number {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            font-weight: 500;
+            font-size: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .step-text {
+            font-size: 20px;
+            line-height: 1.5;
+            color: #ffffff;
+            font-weight: 400;
+            padding-top: 3px;
+        }
+
+        .btn-start {
+            padding: 18px 44px;
+            font-size: 20px;
+            font-weight: 400;
+            font-family: inherit;
+            border: none;
+            border-radius: 10px;
+            background: #A674FE;
+            color: white;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-start:hover {
+            background: #9560e8;
+        }
+
+        /* Right column: course blocks */
+        .welcome-right {
+            background: #151929;
+            border-radius: 24px;
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow-y: auto;
+        }
+
+        .welcome-right-title {
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .levels-progress {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .level-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .level-row:not(.locked):hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .level-row.locked {
+            opacity: 0.55;
+            cursor: default;
+        }
+
+        .level-row-indicator {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .level-row:not(.locked):not(.completed) .level-row-indicator {
+            border-color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .level-row.completed .level-row-indicator {
+            border-color: var(--color-correct);
+            background: var(--color-correct);
+            color: white;
+        }
+
+        .level-row-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .level-row-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .level-row.locked .level-row-title {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .level-row-meta {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.35);
+            margin-top: 3px;
+        }
+
+        .level-row-lock {
+            color: rgba(255, 255, 255, 0.45);
+            display: flex;
+            align-items: center;
+        }
+
+        .level-row-play {
+            color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+        }
+
+        .level-row-play svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        @media (min-width: 1800px) {
+            .welcome-layout { grid-template-columns: 9fr minmax(320px, 3fr); }
+            .welcome-left { padding: 64px; }
+            .welcome-left-content { max-width: 820px; }
+            .welcome-badge { font-size: 20px; padding: 10px 22px; }
+            .welcome-title { font-size: 104px; margin-bottom: 28px; }
+            .welcome-subtitle { font-size: 26px; margin-bottom: 44px; }
+            .step-number { width: 36px; height: 36px; font-size: 24px; }
+            .step-text { font-size: 26px; }
+            .instructions-section { gap: 18px; margin-bottom: 52px; }
+            .btn-start { font-size: 26px; padding: 22px 56px; border-radius: 14px; }
+            .welcome-right { padding: 32px 28px; }
+            .welcome-right-title { font-size: 20px; margin-bottom: 24px; }
+            .level-row-indicator { width: 44px; height: 44px; font-size: 20px; }
+            .level-row-title { font-size: 26px; }
+            .level-row-meta { font-size: 20px; }
+            .level-row { padding: 16px 14px; gap: 16px; }
+            .level-row-play svg, .level-row-lock svg { width: 22px; height: 22px; }
+            /* Game screen scaling */
+            .game-level-info { font-size: 24px; }
+            .game-hint { font-size: 20px; }
+            .btn { font-size: 22px; padding: 18px 36px; border-radius: 12px; }
+            .game-col-sidebar { padding: 32px 28px; gap: 20px; }
+            .game-col-slide { padding: 28px; }
+            .tips-header { font-size: 20px; }
+            .tip-item { font-size: 18px; padding: 16px 18px; }
+            .icon-btn svg { width: 28px; height: 28px; }
+        }
+
+        @media (min-width: 2400px) {
+            .welcome-left { padding: 80px; }
+            .welcome-left-content { max-width: 1000px; }
+            .welcome-badge { font-size: 24px; padding: 12px 26px; }
+            .welcome-title { font-size: 128px; margin-bottom: 36px; }
+            .welcome-subtitle { font-size: 32px; margin-bottom: 52px; }
+            .step-number { width: 44px; height: 44px; font-size: 28px; }
+            .step-text { font-size: 32px; }
+            .instructions-section { gap: 22px; margin-bottom: 60px; }
+            .btn-start { font-size: 32px; padding: 26px 64px; border-radius: 16px; }
+            .welcome-right-title { font-size: 24px; }
+            .level-row-indicator { width: 52px; height: 52px; font-size: 24px; }
+            .level-row-title { font-size: 32px; }
+            .level-row-meta { font-size: 24px; }
+            .level-row { padding: 20px 16px; gap: 18px; }
+            /* Game screen scaling */
+            .game-level-info { font-size: 30px; }
+            .game-hint { font-size: 24px; }
+            .btn { font-size: 26px; padding: 22px 44px; border-radius: 14px; }
+            .game-col-sidebar { padding: 40px 32px; gap: 24px; }
+            .game-col-slide { padding: 32px; }
+            .tips-header { font-size: 24px; }
+            .tip-item { font-size: 22px; padding: 20px 22px; }
+            .icon-btn svg { width: 34px; height: 34px; }
+        }
+
+        @media (max-width: 960px) {
+            .welcome-layout {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto;
+            }
+            .welcome-left { min-height: 480px; border-radius: 16px; padding: 32px; }
+            .welcome-right { border-radius: 16px; }
+        }
+
+        @media (max-width: 640px) {
+            .welcome-left { padding: 24px; min-height: 400px; border-radius: 12px; }
+            .welcome-right { border-radius: 12px; }
+            .welcome-title { font-size: 2rem; margin-left: 0; }
+            .welcome-badge { font-size: 0.65rem; padding: 5px 10px; }
         }
 
         /* ========== GAME SCREEN ========== */
         .game-screen {
-            padding: 40px 20px;
+            padding: 0;
             width: 100%;
+            flex-direction: column;
+        }
+
+        .game-screen.active {
+            display: flex;
+            flex: 1;
         }
 
         .game-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 15px 20px;
-            background: var(--color-surface);
-            border-radius: 8px;
-        }
-
-        .game-header-center {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
+            display: none;
         }
 
         .game-level-info {
-            font-weight: 600;
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--color-text);
+        }
+
+        /* ========== TWO-COLUMN GAME LAYOUT ========== */
+        .game-layout {
+            display: grid;
+            grid-template-columns: 9fr 3fr;
+            gap: 12px;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .game-col-slide {
+            min-width: 0;
+            display: flex;
+            align-items: flex-start;
+            background: var(--color-surface);
+            border-radius: 24px;
+            padding: 20px;
+        }
+
+        .game-col-sidebar {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: var(--color-surface);
+            border-radius: 24px;
+            padding: 24px 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .sidebar-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .sidebar-hint {
+            padding: 0;
+            background: none;
         }
 
         .game-hint {
-            font-size: 0.9rem;
-            color: var(--color-accent);
-            font-weight: 500;
+            font-size: 16px;
+            color: #A674FE;
+            font-weight: 400;
         }
 
-        .info-btn {
+        @media (max-width: 860px) {
+            .game-layout {
+                grid-template-columns: 1fr;
+            }
+            .game-col-slide { border-radius: 16px; }
+            .game-col-sidebar {
+                overflow-y: visible;
+                border-radius: 16px;
+            }
+        }
+
+        .back-buttons {
+            display: flex;
+            gap: 6px;
+        }
+
+        .icon-btn {
             background: none;
-            border: 1px solid var(--color-border);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            border: none;
+            padding: 4px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: opacity 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--color-text-light);
         }
 
-        .info-btn:hover {
-            border-color: var(--color-accent);
-            color: var(--color-accent);
+        .icon-btn svg {
+            width: 22px;
+            height: 22px;
         }
 
-        .back-btn {
-            background: none;
-            border: 1px solid var(--color-border);
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
+        .icon-btn:hover {
+            opacity: 0.6;
         }
 
-        .back-btn:hover {
-            border-color: var(--color-primary);
+        .icon-btn-muted {
+            opacity: 0.35;
+        }
+
+        .icon-btn-muted:hover {
+            opacity: 0.6;
         }
 
         /* ========== SLIDE AREA ========== */
         .slide-container {
             position: relative;
             background: var(--color-secondary);
-            border-radius: 8px;
+            border-radius: 12px;
             overflow: hidden;
-            margin-bottom: 20px;
             width: 100%;
+            border: 2px solid #EEF1F6;
         }
 
         .slide-wrapper {
@@ -338,7 +733,7 @@
         /* ========== MARKUP MODE (hidden, ?mode=markup) ========== */
         .markup-mode { display: none; }
         body.markup-active .markup-mode { display: block; }
-        body.markup-active .container { display: none; }
+        body.markup-active .page-layout { display: none; }
 
         .markup-panel {
             max-width: 1400px;
@@ -546,16 +941,15 @@
         /* ========== GAME CONTROLS ========== */
         .game-controls {
             display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-bottom: 20px;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .btn {
-            padding: 14px 28px;
-            font-size: 1rem;
+            padding: 16px 32px;
+            font-size: 18px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s ease;
             font-weight: 500;
@@ -563,22 +957,22 @@
         }
 
         .btn-primary {
-            background: var(--color-primary);
+            background: #A674FE;
             color: white;
         }
 
         .btn-primary:hover {
-            background: var(--color-secondary);
+            background: #9560e8;
         }
 
         .btn-secondary {
             background: var(--color-surface);
-            color: var(--color-primary);
+            color: var(--color-text);
             border: 2px solid var(--color-border);
         }
 
         .btn-secondary:hover {
-            border-color: var(--color-primary);
+            border-color: var(--color-text);
         }
 
         .btn-secondary.showing-correct {
@@ -594,10 +988,9 @@
 
         /* ========== TIPS PANEL ========== */
         .tips-panel {
-            background: var(--color-surface);
+            background: var(--color-background);
             border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 16px;
             display: none;
         }
 
@@ -636,10 +1029,9 @@
         /* ========== FEEDBACK SECTION ========== */
         .feedback-section {
             text-align: center;
-            padding: 20px;
-            background: var(--color-surface);
+            padding: 16px;
+            background: var(--color-background);
             border-radius: 8px;
-            margin-top: 20px;
             display: none;
         }
 
@@ -670,16 +1062,19 @@
         /* ========== RESULTS SCREEN ========== */
         .results-screen {
             text-align: center;
-            padding: 60px 20px;
+            padding: 40px 20px;
         }
 
         .results-card {
-            background: var(--color-surface);
-            border-radius: 16px;
-            padding: 50px;
+            background: none;
+            padding: 40px 50px;
             max-width: 600px;
             margin: 0 auto;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .main-card:has(.results-screen.active) {
+            background: #151929;
+            border-radius: 24px;
         }
 
         .results-icon {
@@ -690,24 +1085,25 @@
         .results-title {
             font-size: 2rem;
             margin-bottom: 10px;
+            color: #ffffff;
         }
 
         .results-subtitle {
             font-size: 1.1rem;
-            color: var(--color-text-light);
+            color: rgba(255, 255, 255, 0.6);
             margin-bottom: 30px;
         }
 
         .score-display {
             font-size: 3.5rem;
             font-weight: bold;
-            color: var(--color-primary);
+            color: #ffffff;
             margin-bottom: 10px;
         }
 
         .score-label {
-            color: var(--color-text-light);
-            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 30px;
         }
 
         .results-buttons {
@@ -727,34 +1123,46 @@
             padding: 12px 20px;
         }
 
+        .results-screen .btn-secondary {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .results-screen .btn-secondary:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            color: #ffffff;
+        }
+
         .btn-large {
             padding: 16px 32px;
             font-size: 1.1rem;
         }
 
         .share-section {
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 1px solid var(--color-border);
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         .share-title {
             font-size: 1rem;
-            color: var(--color-text-light);
-            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 10px;
         }
 
         .share-buttons {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
             flex-wrap: wrap;
         }
 
         .share-btn {
-            padding: 10px 20px;
-            border: 1px solid var(--color-border);
-            background: var(--color-surface);
+            padding: 8px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s;
@@ -765,8 +1173,8 @@
         }
 
         .share-btn:hover {
-            border-color: var(--color-primary);
-            background: var(--color-background);
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         /* ========== MODAL ========== */
@@ -817,38 +1225,8 @@
             justify-content: flex-end;
         }
 
-        /* ========== CORRECT VERSION OVERLAY ========== */
-        .correct-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.9);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            cursor: pointer;
-        }
 
-        .correct-overlay.visible {
-            display: flex;
-        }
 
-        .correct-overlay img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-        }
-
-        .correct-overlay-hint {
-            position: absolute;
-            bottom: 30px;
-            color: white;
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
 
         /* ========== TOAST MESSAGE ========== */
         .toast {
@@ -894,7 +1272,7 @@
         }
 
         .onboarding-content {
-            font-family: 'Tilda Sans VF', sans-serif;
+            font-family: 'Google Sans', sans-serif;
             color: white;
             font-size: 1.2rem;
             line-height: 1.8;
@@ -917,77 +1295,134 @@
         .onboarding-dismiss {
             font-size: 1.1rem;
             opacity: 0.7;
-            font-family: 'Tilda Sans VF', sans-serif;
+            font-family: 'Google Sans', sans-serif;
             margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Language Selection Screen -->
-        <div id="language-screen" class="screen language-screen active">
-            <h1>Visual Perception Trainer</h1>
-            <p>Learn to spot design mistakes and improve your presentations</p>
-            <div class="language-buttons">
-                <button class="lang-btn" onclick="selectLanguage('en')">English</button>
-                <button class="lang-btn" onclick="selectLanguage('ru')">Русский</button>
-            </div>
+    <div class="page-layout">
+    <header class="site-header">
+        <a class="logo-link" id="logo-link" href="https://kachkovenko.design" target="_blank">
+            <svg width="175" height="25" viewBox="0 0 175 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M36 11.7749V1.22506H38.9302V9.45396L38.1479 8.8491L44.1932 1.22506H47.3083L38.6599 11.7749H36ZM41.0923 6.73913L43.2544 4.96675L47.4505 11.7749H44.1078L41.0923 6.73913Z" fill="#273043"/>
+                <path d="M50.4535 9.74936V7.40026H57.8074V9.74936H50.4535ZM56.1289 1.22506L60.9794 11.7749H57.8358L53.7677 2.46292H54.6212L50.5388 11.7749H47.3953L52.2457 1.22506H56.1289Z" fill="#273043"/>
+                <path d="M73.1996 7.35806C73.0953 8.28644 72.7728 9.1023 72.2323 9.80563C71.6918 10.4996 70.9806 11.0388 70.0987 11.4233C69.2263 11.8078 68.2211 12 67.0831 12C65.8409 12 64.7551 11.7702 63.8258 11.3107C62.8965 10.8512 62.171 10.2089 61.6495 9.38363C61.1374 8.5584 60.8814 7.59719 60.8814 6.5C60.8814 5.40281 61.1374 4.4416 61.6495 3.61637C62.171 2.79113 62.8965 2.14876 63.8258 1.68926C64.7551 1.22975 65.8409 1 67.0831 1C68.2211 1 69.2263 1.19224 70.0987 1.57673C70.9806 1.96121 71.6918 2.50512 72.2323 3.20844C72.7728 3.90239 73.0953 4.71356 73.1996 5.64194H70.2409C70.1461 5.19182 69.9612 4.81202 69.6862 4.50256C69.4112 4.18372 69.0508 3.9399 68.6051 3.7711C68.1689 3.6023 67.6616 3.5179 67.0831 3.5179C66.4194 3.5179 65.8456 3.63981 65.362 3.88363C64.8784 4.11807 64.5086 4.46036 64.2525 4.91049C63.9965 5.35124 63.8685 5.88107 63.8685 6.5C63.8685 7.11893 63.9965 7.65345 64.2525 8.10358C64.5086 8.54433 64.8784 8.88661 65.362 9.13043C65.8456 9.36488 66.4194 9.4821 67.0831 9.4821C67.6616 9.4821 68.1689 9.40239 68.6051 9.24297C69.0508 9.08355 69.4112 8.84442 69.6862 8.52558C69.9612 8.20673 70.1461 7.81756 70.2409 7.35806H73.1996Z" fill="#273043"/>
+                <path d="M74.6304 1.22506H77.5748V11.7749H74.6304V1.22506ZM83.0227 1.22506H85.9814V11.7749H83.0227V1.22506ZM76.2804 5.12148H84.246V7.70972H76.2804V5.12148Z" fill="#273043"/>
+                <path d="M87.9795 11.7749V1.22506H90.9097V9.45396L90.1274 8.8491L96.1727 1.22506H99.2878L90.6395 11.7749H87.9795ZM93.0718 6.73913L95.2339 4.96675L99.43 11.7749H96.0873L93.0718 6.73913Z" fill="#273043"/>
+                <path d="M105.508 12C104.247 12 103.138 11.7702 102.18 11.3107C101.231 10.8512 100.492 10.2089 99.9608 9.38363C99.4392 8.5584 99.1784 7.59719 99.1784 6.5C99.1784 5.40281 99.4392 4.4416 99.9608 3.61637C100.492 2.79113 101.231 2.14876 102.18 1.68926C103.138 1.22975 104.247 1 105.508 1C106.779 1 107.888 1.22975 108.837 1.68926C109.785 2.14876 110.525 2.79113 111.056 3.61637C111.587 4.4416 111.852 5.40281 111.852 6.5C111.852 7.59719 111.587 8.5584 111.056 9.38363C110.525 10.2089 109.785 10.8512 108.837 11.3107C107.888 11.7702 106.779 12 105.508 12ZM105.508 9.3977C106.2 9.3977 106.798 9.28048 107.3 9.04604C107.803 8.81159 108.187 8.47869 108.453 8.04731C108.728 7.61594 108.865 7.10017 108.865 6.5C108.865 5.89983 108.728 5.38406 108.453 4.95269C108.187 4.52131 107.803 4.18841 107.3 3.95396C106.798 3.71952 106.2 3.6023 105.508 3.6023C104.825 3.6023 104.233 3.71952 103.73 3.95396C103.228 4.18841 102.839 4.52131 102.564 4.95269C102.289 5.38406 102.151 5.89983 102.151 6.5C102.151 7.10017 102.289 7.61594 102.564 8.04731C102.839 8.47869 103.228 8.81159 103.73 9.04604C104.233 9.28048 104.825 9.3977 105.508 9.3977Z" fill="#273043"/>
+                <path d="M119.035 10.4668H117.783L121.894 1.22506H125.009L120.045 11.7749H116.702L111.738 1.22506H114.895L119.035 10.4668Z" fill="#273043"/>
+                <path d="M135.13 5.44501V7.55499H127.321V5.44501H135.13ZM129.327 6.5L128.63 10.734L127.435 9.41177H135.6V11.7749H125.685L126.496 6.5L125.685 1.22506H135.529V3.58824H127.435L128.63 2.26598L129.327 6.5Z" fill="#273043"/>
+                <path d="M147.192 9.73529L146.281 9.91816V1.22506H149.14V11.7749H145.428L139.269 3.09591L140.165 2.91304V11.7749H137.306V1.22506H141.118L147.192 9.73529Z" fill="#273043"/>
+                <path d="M151.127 11.7749V1.22506H154.057V9.45396L153.275 8.8491L159.32 1.22506H162.436L153.787 11.7749H151.127ZM156.22 6.73913L158.382 4.96675L162.578 11.7749H159.235L156.22 6.73913Z" fill="#273043"/>
+                <path d="M168.656 12C167.395 12 166.285 11.7702 165.328 11.3107C164.379 10.8512 163.64 10.2089 163.109 9.38363C162.587 8.5584 162.326 7.59719 162.326 6.5C162.326 5.40281 162.587 4.4416 163.109 3.61637C163.64 2.79113 164.379 2.14876 165.328 1.68926C166.285 1.22975 167.395 1 168.656 1C169.927 1 171.036 1.22975 171.984 1.68926C172.933 2.14876 173.672 2.79113 174.203 3.61637C174.734 4.4416 175 5.40281 175 6.5C175 7.59719 174.734 8.5584 174.203 9.38363C173.672 10.2089 172.933 10.8512 171.984 11.3107C171.036 11.7702 169.927 12 168.656 12ZM168.656 9.3977C169.348 9.3977 169.946 9.28048 170.448 9.04604C170.951 8.81159 171.335 8.47869 171.6 8.04731C171.875 7.61594 172.013 7.10017 172.013 6.5C172.013 5.89983 171.875 5.38406 171.6 4.95269C171.335 4.52131 170.951 4.18841 170.448 3.95396C169.946 3.71952 169.348 3.6023 168.656 3.6023C167.973 3.6023 167.381 3.71952 166.878 3.95396C166.375 4.18841 165.987 4.52131 165.712 4.95269C165.437 5.38406 165.299 5.89983 165.299 6.5C165.299 7.10017 165.437 7.61594 165.712 8.04731C165.987 8.47869 166.375 8.81159 166.878 9.04604C167.381 9.28048 167.973 9.3977 168.656 9.3977Z" fill="#273043"/>
+                <path d="M39.8226 15.1637C40.7289 15.1637 41.5227 15.324 42.2041 15.6445C42.8923 15.9582 43.4238 16.4049 43.7986 16.9847C44.1801 17.5575 44.3709 18.2293 44.3709 19C44.3709 19.7707 44.1801 20.4459 43.7986 21.0256C43.4238 21.5985 42.8923 22.0452 42.2041 22.3657C41.5227 22.6795 40.7289 22.8363 39.8226 22.8363H36V15.1637H39.8226ZM38.1055 21.9463L37.0936 20.954H39.9862C40.4427 20.954 40.8379 20.8755 41.1718 20.7187C41.5125 20.555 41.7748 20.3265 41.9588 20.0332C42.1428 19.74 42.2348 19.3956 42.2348 19C42.2348 18.5976 42.1428 18.2532 41.9588 17.9668C41.7748 17.6735 41.5125 17.4484 41.1718 17.2916C40.8379 17.1279 40.4427 17.046 39.9862 17.046H37.0936L38.1055 16.0537V21.9463Z" fill="#273043"/>
+                <path d="M51.9241 18.2327V19.7673H46.3128V18.2327H51.9241ZM47.754 19L47.2531 22.0793L46.3946 21.1176H52.2614V22.8363H45.1374L45.72 19L45.1374 15.1637H52.2103V16.8824H46.3946L47.2531 15.9207L47.754 19Z" fill="#273043"/>
+                <path d="M53.1398 20.3197H55.2964C55.3305 20.5311 55.4293 20.7153 55.5928 20.8721C55.7564 21.029 55.9744 21.1517 56.247 21.2404C56.5263 21.3222 56.8534 21.3632 57.2282 21.3632C57.746 21.3632 58.1549 21.2984 58.4547 21.1688C58.7545 21.0324 58.9044 20.8346 58.9044 20.5754C58.9044 20.3777 58.8192 20.2242 58.6489 20.1151C58.4785 20.006 58.1515 19.9275 57.6677 19.8798L56.2368 19.7468C55.1806 19.6513 54.414 19.4126 53.937 19.0307C53.4601 18.6419 53.2216 18.1202 53.2216 17.4655C53.2216 16.9335 53.3749 16.4834 53.6815 16.1151C53.995 15.7468 54.4311 15.4706 54.9898 15.2864C55.5554 15.0955 56.2129 15 56.9624 15C57.6983 15 58.3525 15.1057 58.9249 15.3171C59.4972 15.5217 59.9503 15.815 60.2842 16.1969C60.6249 16.5789 60.8089 17.0222 60.8362 17.5269H58.6898C58.6625 17.3427 58.5739 17.1858 58.424 17.0563C58.2809 16.9199 58.0833 16.8176 57.8312 16.7494C57.5791 16.6743 57.2759 16.6368 56.9216 16.6368C56.4446 16.6368 56.0664 16.7016 55.787 16.8312C55.5077 16.954 55.368 17.1381 55.368 17.3836C55.368 17.561 55.4497 17.7042 55.6133 17.8133C55.7836 17.9224 56.0868 17.9974 56.5229 18.0384L58.0459 18.1918C58.7749 18.26 59.3575 18.3794 59.7936 18.5499C60.2297 18.7136 60.5466 18.942 60.7442 19.2353C60.9418 19.5286 61.0406 19.8934 61.0406 20.3299C61.0406 20.8687 60.8805 21.3393 60.5602 21.7417C60.2399 22.1373 59.7902 22.4476 59.211 22.6726C58.6319 22.8909 57.9573 23 57.1873 23C56.3969 23 55.6985 22.8909 55.092 22.6726C54.4924 22.4476 54.0222 22.1338 53.6815 21.7315C53.3408 21.3223 53.1603 20.8517 53.1398 20.3197Z" fill="#273043"/>
+                <path d="M62.1012 15.1637H64.217V22.8363H62.1012V15.1637Z" fill="#273043"/>
+                <path d="M73.4943 19.5115C73.4738 19.9753 73.3784 20.4186 73.2081 20.8414C73.0445 21.2575 72.8027 21.6292 72.4824 21.9565C72.169 22.2839 71.7738 22.5396 71.2968 22.7238C70.8266 22.9079 70.2781 23 69.6512 23C69.0516 23 68.4894 22.9147 67.9648 22.7442C67.4401 22.5669 66.9767 22.3078 66.5747 21.9668C66.1795 21.6257 65.8695 21.2063 65.6446 20.7084C65.4266 20.2106 65.3175 19.6411 65.3175 19C65.3175 18.3589 65.43 17.7894 65.6548 17.2916C65.8797 16.7937 66.1931 16.3743 66.5952 16.0332C67.004 15.6922 67.4742 15.4365 68.0056 15.266C68.5439 15.0887 69.1299 15 69.7636 15C70.6086 15 71.3377 15.1296 71.9509 15.3887C72.5642 15.6479 73.0582 16.0026 73.4329 16.4527C73.8077 16.9028 74.0496 17.4246 74.1586 18.0179H72.0225C71.9543 17.7587 71.8146 17.5371 71.6034 17.3529C71.399 17.162 71.1401 17.0188 70.8266 16.9233C70.52 16.821 70.1691 16.7698 69.7739 16.7698C69.2969 16.7698 68.8846 16.8551 68.5371 17.0256C68.1896 17.1893 67.9205 17.4382 67.7297 17.7724C67.5389 18.0997 67.4435 18.509 67.4435 19C67.4435 19.4979 67.5457 19.9173 67.7501 20.2583C67.9545 20.5993 68.2441 20.8551 68.6189 21.0256C69.0005 21.1961 69.4468 21.2813 69.9578 21.2813C70.4553 21.2813 70.8948 21.2131 71.2763 21.0767C71.6579 20.9335 71.9611 20.7255 72.186 20.4527C72.4177 20.1799 72.5505 19.8525 72.5846 19.4706L73.4943 19.5115ZM70.1623 20.3606V18.867H74.2302V22.8363H72.7277L72.4313 19.798L72.8299 20.3606H70.1623Z" fill="#273043"/>
+                <path d="M82.5997 21.3529L81.9456 21.4859V15.1637H84V22.8363H81.3323L76.9067 16.5243L77.5506 16.3913V22.8363H75.4962V15.1637H78.2354L82.5997 21.3529Z" fill="#273043"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M24.0973 17.1728C24.6795 15.7292 25 14.152 25 12.5C25 10.2753 24.4188 8.1863 23.4 6.37661L19.9606 10.5684L24.0973 17.1728ZM20.649 21.9789L16.3413 14.9796L8.62266 24.387C9.84331 24.7849 11.1465 25 12.5 25C15.6133 25 18.4608 23.8618 20.649 21.9789ZM3 20.6244C1.12967 18.4394 0 15.6016 0 12.5C0 9.39836 1.12967 6.56056 3 4.37561V20.6244ZM8.65508 0.602484V17.2736L20.3449 2.76768C18.2 1.03652 15.471 0 12.5 0C11.1585 0 9.86638 0.211319 8.65508 0.602484Z" fill="#273043"/>
+            </svg>
+        </a>
+        <div class="lang-switcher">
+            <button class="lang-flag" id="flag-en" onclick="switchLang('en')">EN</button>
+            <button class="lang-flag" id="flag-ru" onclick="switchLang('ru')">RU</button>
         </div>
+    </header>
 
-        <!-- Level Selection Screen -->
-        <div id="levels-screen" class="screen levels-screen">
-            <div class="levels-header">
-                <h2 id="levels-title">Select Level</h2>
-                <p id="levels-subtitle" style="color: var(--color-text-light); margin-top: 10px;">Complete each level to unlock the next</p>
-            </div>
-            <div class="levels-grid" id="levels-grid">
-                <!-- Levels will be generated by JS -->
+    <main class="main-card">
+    <div class="container">
+        <!-- Welcome & Level Selection Screen -->
+        <div id="levels-screen" class="screen levels-screen active">
+            <div class="welcome-layout">
+                <div class="welcome-left">
+                    <div class="welcome-left-content">
+                        <span class="welcome-badge" id="welcome-badge">ТЕСТ ДЛЯ&nbsp;НЕДИЗАЙНЕРОВ</span>
+                        <h1 class="welcome-title" id="welcome-title">Мелочь,<br>а&nbsp;неприятно</h1>
+                        <p class="welcome-subtitle" id="welcome-subtitle">Пройдите тест и&nbsp;проверьте, насколько хорошо вы&nbsp;замечаете визуальные недочёты в&nbsp;презентациях. Это займёт около 20&nbsp;минут.</p>
+
+                        <div class="instructions-section">
+                            <div class="instruction-step">
+                                <div class="step-number">1</div>
+                                <p class="step-text" id="step1-text">Рассмотрите слайд и&nbsp;нажмите на&nbsp;области, где нарушено выравнивание, отступы или оформление</p>
+                            </div>
+                            <div class="instruction-step">
+                                <div class="step-number">2</div>
+                                <p class="step-text" id="step2-text">Нажмите «Проверить»&nbsp;— увидите, что нашли и&nbsp;что пропустили</p>
+                            </div>
+                            <div class="instruction-step">
+                                <div class="step-number">3</div>
+                                <p class="step-text" id="step3-text">Прочитайте подсказки&nbsp;— они объяснят, как исправить</p>
+                            </div>
+                        </div>
+
+                        <button class="btn-start" id="start-test-btn" onclick="startFirstAvailable()">Начать тест</button>
+                    </div>
+                </div>
+
+                <div class="welcome-right">
+                    <div class="welcome-right-title" id="levels-col-title">Блоки теста</div>
+                    <div class="levels-progress" id="levels-grid">
+                        <!-- Levels will be generated by JS -->
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Game Screen -->
         <div id="game-screen" class="screen game-screen">
             <div class="game-header">
-                <button class="back-btn" onclick="goToLevels()" id="back-btn">← Back</button>
-                <div class="game-header-center">
-                    <span class="game-level-info" id="game-level-info">Slide 1/3: Alignment</span>
-                    <span class="game-hint" id="game-hint">Find 3 mistakes</span>
-                </div>
-                <button class="info-btn" onclick="showOnboarding()" title="How to play">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="16" x2="12" y2="12"></line>
-                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                    </svg>
-                </button>
             </div>
 
-            <div class="slide-container">
-                <div class="slide-wrapper" id="slide-wrapper">
-                    <img id="slide-image" class="slide-image" src="" alt="Slide">
-                    <!-- Click markers will be added here -->
+            <div class="game-layout">
+                <div class="game-col-slide">
+                    <div class="slide-container">
+                        <div class="slide-wrapper" id="slide-wrapper">
+                            <img id="slide-image" class="slide-image" src="" alt="Slide">
+                            <!-- Click markers will be added here -->
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="game-controls">
-                <button class="btn btn-primary" id="check-btn" onclick="checkAnswers()">Check</button>
-                <button class="btn btn-secondary" id="correct-btn" onclick="toggleCorrectVersion()" style="display: none;">Show Correct Version</button>
-                <button class="btn btn-primary" id="next-btn" onclick="nextSlide()" style="display: none;">Next →</button>
-            </div>
+                <div class="game-col-sidebar">
+                    <div class="sidebar-header">
+                        <div class="sidebar-header-top">
+                            <span class="game-level-info" id="game-level-info">Slide 1/3: Alignment</span>
+                            <div class="sidebar-nav">
+                            <button class="icon-btn" onclick="prevSlide()" id="prev-btn" title="Previous">
+                                <svg viewBox="0 0 20 20" fill="#273043"><path clip-rule="evenodd" d="m0 10c0-5.514 4.486-10 10-10s10 4.486 10 10-4.486 10-10 10-10-4.486-10-10zm8.414-1.00003 1.293-1.293c.09284-.09284.16649-.20307.21674-.32437.05025-.12131.07611-.25133.07611-.38263s-.02586-.26132-.07611-.38262c-.05025-.12131-.1239-.23153-.21674-.32438-.09285-.09284-.20307-.16649-.32437-.21674-.12131-.05025-.25133-.07611-.38263-.07611s-.26132.02586-.38263.07611c-.1213.05025-.23153.1239-.32437.21674l-3 3c-.09319.09265-.16713.20281-.2176.32415-.05046.12133-.07643.25144-.07643.38285 0 .13143.02597.26153.07643.38283.05047.1214.12441.2315.2176.3242l3 3c.09284.0928.20307.1665.32437.2167.12131.0503.25133.0761.38263.0761s.26132-.0258.38263-.0761c.1213-.0502.23152-.1239.32437-.2167.09284-.0929.16649-.2031.21674-.3244s.07611-.2513.07611-.3826-.02586-.2613-.07611-.3827c-.05025-.1213-.1239-.2315-.21674-.3243l-1.293-1.293h5.586c.2652 0 .5196-.1054.7071-.2929.1875-.1876.2929-.4419.2929-.70713 0-.26522-.1054-.51957-.2929-.70711-.1875-.18753-.4419-.29289-.7071-.29289z" fill-rule="evenodd"/></svg>
+                            </button>
+                            <button class="icon-btn" onclick="goToLevels()" id="back-btn" title="Menu">
+                                <svg viewBox="0 0 512 512" fill="#273043"><path d="m256 0c-141.39 0-256 114.61-256 256 0 141.39 114.61 256 256 256 141.38 0 256-114.61 256-256 0-141.39-114.61-256-256-256zm129.36 263.78h-10.54v107.33c0 11.32-9.18 20.51-20.51 20.51h-58.76v-69.32c0-10.92-4.43-20.81-11.59-27.97-7.15-7.15-17.04-11.58-27.96-11.58-21.84 0-39.55 17.7-39.55 39.55v69.32h-58.76c-11.33 0-20.51-9.19-20.51-20.51v-107.33h-10.54c-19.24 0-27.98-24.04-13.23-36.4l116.24-97.42c15.25-12.77 37.45-12.77 52.7 0l116.24 97.42c14.75 12.36 6.01 36.4-13.23 36.4z"/></svg>
+                            </button>
+                            <button class="icon-btn icon-btn-muted" onclick="showOnboarding()" title="How to play">
+                                <svg viewBox="0 0 20 20" fill="#273043"><path clip-rule="evenodd" d="m10 20c5.514 0 10-4.486 10-10s-4.486-10.00000048-10-10-10.00000048 4.486-10 10 4.486 10 10 10zm1-6c0 .5523-.4477 1-1 1-.55229 0-1-.4477-1-1v-4c0-.55228.44771-1 1-1 .5523 0 1 .44772 1 1zm-1-9c-.55229 0-1 .44771-1 1s.44771 1 1 1c.5523 0 1-.44771 1-1s-.4477-1-1-1z" fill-rule="evenodd"/></svg>
+                            </button>
+                        </div>
+                        </div>
+                        <div class="sidebar-hint">
+                            <span class="game-hint" id="game-hint">Find 3 mistakes</span>
+                        </div>
+                    </div>
 
-            <div class="tips-panel" id="tips-panel">
-                <div class="tips-header">
-                    <span>💡</span>
-                    <span id="tips-title">Tips for this slide</span>
+                    <div class="game-controls">
+                        <button class="btn btn-primary" id="check-btn" onclick="checkAnswers()">Check</button>
+                        <button class="btn btn-secondary" id="correct-btn" onclick="toggleCorrectVersion()" style="display: none;">Show Correct Version</button>
+                        <button class="btn btn-primary" id="next-btn" onclick="nextSlide()" style="display: none;">Next →</button>
+                    </div>
+
+                    <div class="tips-panel" id="tips-panel">
+                        <div class="tips-header">
+                            <span>💡</span>
+                            <span id="tips-title">Tips for this slide</span>
+                        </div>
+                        <div id="tips-content">
+                            <!-- Tips will be generated by JS -->
+                        </div>
+                    </div>
+
                 </div>
-                <div id="tips-content">
-                    <!-- Tips will be generated by JS -->
-                </div>
-            </div>
-
-            <div class="feedback-section" id="feedback-section">
-                <p id="feedback-text">Found something else? Let us know!</p>
-                <button class="feedback-btn" onclick="openFeedback()" id="feedback-btn">Send Feedback</button>
             </div>
         </div>
 
@@ -1007,17 +1442,36 @@
                     </div>
                 </div>
                 <div class="share-section">
-                    <div class="share-title" id="share-title">Share your result</div>
-                    <div class="share-buttons">
-                        <button class="share-btn" onclick="shareTwitter()">𝕏 Twitter</button>
+                    <div class="share-title" id="share-title">Share the test</div>
+                    <div class="share-buttons" id="share-buttons-en">
+                        <button class="share-btn" onclick="shareTwitter()">Twitter</button>
                         <button class="share-btn" onclick="shareFacebook()">Facebook</button>
                         <button class="share-btn" onclick="shareLinkedIn()">LinkedIn</button>
                         <button class="share-btn" onclick="shareTelegram()">Telegram</button>
-                        <button class="share-btn" onclick="copyLink()" id="copy-link-btn">📋 Copy Link</button>
+                        <button class="share-btn" onclick="copyLink()" id="copy-link-btn">Copy link</button>
+                    </div>
+                    <div class="share-buttons" id="share-buttons-ru" style="display:none">
+                        <button class="share-btn" onclick="copyLink()" id="copy-link-btn-ru">Скопировать ссылку</button>
+                        <button class="share-btn" onclick="shareNative()" id="share-native-btn">Поделиться</button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    </main>
+
+    <footer class="site-footer">
+        <span id="footer-copyright">Kachkovenko.Design Ltd. 2026</span>
+        <div class="footer-right">
+            <span id="footer-feedback" onclick="openFeedback()" style="cursor:pointer">Send feedback</span>
+            <a href="https://t.me/maxkachkovenko" target="_blank" title="Telegram">
+                <svg viewBox="0 0 512 512" fill="currentColor"><path d="M256,0C114.62,0,0,114.62,0,256s114.62,256,256,256s256-114.62,256-256S397.38,0,256,0z M374.66,174.1c-3.85,40.48-20.52,138.71-29,184.05c-3.59,19.19-10.66,25.62-17.5,26.25c-14.86,1.37-26.15-9.83-40.55-19.27c-22.53-14.77-35.26-23.96-57.13-38.37c-25.28-16.66-8.89-25.81,5.51-40.77c3.77-3.92,69.27-63.5,70.54-68.9c0.16-0.68,0.31-3.2-1.19-4.53s-3.71-0.87-5.3-0.51c-2.26,0.51-38.26,24.3-107.98,71.37c-10.22,7.02-19.47,10.43-27.77,10.26c-9.14-0.2-26.72-5.17-39.79-9.42c-16.03-5.21-28.77-7.97-27.66-16.82c0.57-4.61,6.92-9.32,19.04-14.14c74.63-32.52,124.39-53.95,149.29-64.31c71.099-29.569,85.87-34.71,95.499-34.88C372.731,153.897,375.642,163.853,374.66,174.1z"/></svg>
+            </a>
+            <a href="mailto:hello@kachkovenko.com" title="Email">
+                <svg viewBox="0 0 512 512" fill="currentColor"><path d="m256 0c-141.38 0-256 114.62-256 256s114.62 256 256 256 256-114.62 256-256-114.62-256-256-256zm135 335.08a25.66 25.66 0 0 1-25.59 25.59h-218.82a25.66 25.66 0 0 1-25.59-25.59v-133.76l134.94 67.32 135.06-65.91zm0-157.58-134.94 65.86-135.06-67.36a25.66 25.66 0 0 1 25.57-24.66h218.84a25.66 25.66 0 0 1 25.59 25.58z"/></svg>
+            </a>
+        </div>
+    </footer>
     </div>
 
     <!-- Feedback Modal -->
@@ -1047,11 +1501,8 @@
         </div>
     </div>
 
-    <!-- Correct Version Overlay -->
-    <div class="correct-overlay" id="correct-overlay" onclick="hideCorrectVersion()">
-        <img id="correct-image" src="" alt="Correct version">
-        <div class="correct-overlay-hint" id="overlay-hint">Click anywhere to close</div>
-    </div>
+
+
 
     <!-- Markup mode (hidden, activated by ?mode=markup) -->
     <div class="markup-mode" id="markup-panel">
@@ -1061,6 +1512,8 @@
                 <select id="markup-level"></select>
                 <label>Слайд №:</label>
                 <select id="markup-slide"></select>
+                <label>Язык:</label>
+                <select id="markup-lang"><option value="ru" selected>RU</option><option value="en">EN</option></select>
                 <input type="file" id="markup-file" accept="image/*">
                 <button id="markup-clear">Очистить зоны</button>
                 <button id="markup-export" class="btn-export">Копировать JSON</button>
@@ -1082,7 +1535,8 @@
                 subtitle: "Learn to spot design mistakes and improve your presentations",
                 selectLevel: "Select Level",
                 completeToUnlock: "Complete each level to unlock the next",
-                back: "← Back",
+                backMenu: "← Menu",
+                backPrev: "← Prev",
                 slide: "Slide",
                 slidesCount: "{n} {plural}",
                 slideOne: "slide",
@@ -1101,22 +1555,58 @@
                 sendFeedback: "Send Feedback",
                 levelComplete: "Level Complete!",
                 greatJob: "Great job spotting those mistakes",
+                levelMessages: {
+                    alignment: [
+                        "Looks like deconstructivism is your favorite presentation style!",
+                        "Not bad! But some objects are still running wild across the slide",
+                        "You must be making slides with a ruler and calipers! Keep it up!"
+                    ],
+                    composition: [
+                        "Your slides are like a buffet\u00a0\u2014 lots of everything, but no idea where to start",
+                        "You're on the right track! A little more and your slides will breathe easier",
+                        "Master of balance! Your slides look like they were designed by an architect"
+                    ],
+                    typography: [
+                        "It seems your fonts have a life of their own and refuse to follow the rules",
+                        "Very, very decent! But some typographic nuances are still hiding from you",
+                        "A born typographer! Gutenberg would be proud"
+                    ],
+                    graphics: [
+                        "Effects, shadows, gradients\u2026 Looks like PowerPoint 2003 is your tool of choice!",
+                        "You notice a lot, but some graphic sins still slip through",
+                        "Your visual taste is impeccable! No unnecessary shadow goes unnoticed"
+                    ],
+                    dataCharts: [
+                        "Room to grow! Take a fresh look at your presentations\u00a0\u2014 I'm sure you'll notice much more now",
+                        "Good result! You notice more than most people. Just a few details left to polish",
+                        "Impressive result! You have a great eye for detail. Your presentations are in safe hands"
+                    ]
+                },
                 pointsEarned: "points earned",
                 continue: "Continue",
                 continueToLevel: "Continue to Level {n}",
                 playAgain: "Play Again",
                 backToMenu: "Back to Menu",
-                shareResult: "Share your result",
-                copyLink: "📋 Copy Link",
+                shareResult: "Share the test",
+                copyLink: "Copy link",
+                shareNative: "Share",
                 modalTitle: "Send Feedback",
                 placeholder: "Describe what you found...",
                 cancel: "Cancel",
                 submit: "Submit",
                 clickToClose: "Click anywhere to close",
                 noClicksMessage: "Please click on the slide to mark the mistakes you see before checking.",
-                onboardingStep1: "Click on the areas where you see design mistakes. The number of mistakes is shown at the top of each slide.",
+                welcomeBadge: "TEST FOR NON-DESIGNERS",
+                welcomeTitle: "Mildly\ninfuriating",
+                welcomeSubtitle: "Take the test and see how well you notice visual flaws in\u00a0presentations. It\u00a0takes about 20\u00a0minutes.",
+                step1: "Look at the slide and tap areas with broken alignment, spacing, or formatting",
+                step2: "Press \"Check\"\u00a0— you'll see what you found and what you missed",
+                step3: "Read the tips\u00a0— they'll explain how to\u00a0fix the issues",
+                startTest: "Start Test",
+                courseBlocks: "Test blocks",
+                onboardingStep1: "Click on the areas where you see slide formatting errors. The number of mistakes is shown in the top right corner.",
                 onboardingStep2: "Press the \"Check\" button to see if you found them all.",
-                onboardingStep3: "Tips and detailed explanations will appear below the slide.",
+                onboardingStep3: "Error descriptions and tips will appear on the right side of the interface.",
                 onboardingDismiss: "Click anywhere to start",
                 locked: "Locked",
                 completed: "Completed",
@@ -1135,10 +1625,11 @@
             },
             ru: {
                 title: "Тренажер визуального восприятия",
-                subtitle: "Научитесь находить ошибки дизайна и улучшите свои презентации",
+                subtitle: "Научитесь находить ошибки дизайна и\u00a0улучшите свои презентации",
                 selectLevel: "Выберите уровень",
                 completeToUnlock: "Завершите уровень, чтобы открыть следующий",
-                back: "← Назад",
+                backMenu: "← Меню",
+                backPrev: "← Назад",
                 slide: "Слайд",
                 slidesCount: "{n} {plural}",
                 slideOne: "слайд",
@@ -1148,7 +1639,7 @@
                 showCorrect: "Показать правильный вариант",
                 showOriginal: "Показать оригинал",
                 next: "Далее →",
-                tipsTitle: "Советы по этому слайду",
+                tipsTitle: "Советы по\u00a0этому слайду",
                 findMistakes: "Найдите {n} {plural}",
                 mistakeOne: "ошибку",
                 mistakeFew: "ошибки",
@@ -1156,42 +1647,96 @@
                 feedbackText: "Нашли что-то ещё? Напишите нам!",
                 sendFeedback: "Отправить отзыв",
                 levelComplete: "Уровень пройден!",
-                greatJob: "Отличная работа по поиску ошибок",
+                greatJob: "Отличная работа по\u00a0поиску ошибок",
+                levelMessages: {
+                    alignment: [
+                        "Похоже, деконструктивизм\u00a0— ваш любимый стиль в\u00a0презентациях!",
+                        "Неплохо! Но\u00a0некоторые объекты всё ещё разбегаются по\u00a0слайду",
+                        "Кажется, вы\u00a0делаете слайды с\u00a0линейкой и\u00a0штангенциркулем! Так держать!"
+                    ],
+                    composition: [
+                        "Ваши слайды как шведский стол\u00a0— всего много, но\u00a0непонятно, с\u00a0чего начать",
+                        "Вы\u00a0на\u00a0верном пути! Ещё немного\u00a0— и\u00a0ваши слайды начнут дышать свободнее",
+                        "Мастер баланса! Ваши слайды выглядят так, будто их проектировал архитектор"
+                    ],
+                    typography: [
+                        "Кажется, ваши шрифты живут своей жизнью и\u00a0не\u00a0хотят подчиняться правилам",
+                        "Очень и\u00a0очень неплохо! Но\u00a0часть типографических нюансов пока прячется от\u00a0вас",
+                        "Типограф от\u00a0бога! Гутенберг бы\u00a0вами гордился"
+                    ],
+                    graphics: [
+                        "Эффекты, тени, градиенты\u2026 Похоже, PowerPoint 2003\u00a0— ваш любимый инструмент!",
+                        "Вы\u00a0замечаете многое, но\u00a0некоторые графические грехи пока ускользают",
+                        "Ваш визуальный вкус на\u00a0высоте! Ни\u00a0одна лишняя тень не\u00a0пройдёт незамеченной"
+                    ],
+                    dataCharts: [
+                        "Есть куда расти! Пересмотрите свои презентации свежим взглядом\u00a0— уверен, вы\u00a0теперь заметите гораздо больше",
+                        "Хороший результат! Вы\u00a0замечаете больше, чем большинство людей. Осталось отточить детали",
+                        "Впечатляющий результат! У\u00a0вас отличный глаз на\u00a0детали. Ваши презентации в\u00a0надёжных руках"
+                    ]
+                },
                 pointsEarned: "очков заработано",
                 continue: "Продолжить",
-                continueToLevel: "Перейти к уровню {n}",
+                continueToLevel: "Перейти к\u00a0уровню\u00a0{n}",
                 playAgain: "Играть снова",
-                backToMenu: "К выбору уровня",
-                shareResult: "Поделиться результатом",
-                copyLink: "📋 Копировать",
+                backToMenu: "К\u00a0выбору уровня",
+                shareResult: "Поделиться тестом",
+                copyLink: "Скопировать ссылку",
+                shareNative: "Поделиться",
                 modalTitle: "Отправить отзыв",
                 placeholder: "Опишите, что вы нашли...",
                 cancel: "Отмена",
                 submit: "Отправить",
                 clickToClose: "Нажмите, чтобы закрыть",
-                noClicksMessage: "Пожалуйста, отметьте на слайде ошибки, которые вы видите, прежде чем проверять.",
-                onboardingStep1: "Нажмите на области, где вы видите ошибки дизайна. Количество ошибок указано вверху каждого слайда.",
-                onboardingStep2: "Нажмите кнопку \"Проверить\", чтобы узнать, все ли вы нашли.",
-                onboardingStep3: "Советы и подробные объяснения появятся под слайдом.",
-                onboardingDismiss: "Нажмите в любом месте, чтобы начать",
+                noClicksMessage: "Пожалуйста, отметьте на\u00a0слайде ошибки, которые вы\u00a0видите, прежде чем проверять.",
+                welcomeBadge: "ТЕСТ ДЛЯ\u00a0НЕДИЗАЙНЕРОВ",
+                welcomeTitle: "Мелочь,\nа\u00a0неприятно",
+                welcomeSubtitle: "Пройдите тест и\u00a0проверьте, насколько хорошо вы\u00a0замечаете визуальные недочёты в\u00a0презентациях. Это займёт около 20\u00a0минут.",
+                step1: "Рассмотрите слайд и\u00a0нажмите на\u00a0области, где нарушено выравнивание, отступы или оформление",
+                step2: "Нажмите «Проверить»\u00a0— увидите, что нашли и\u00a0что пропустили",
+                step3: "Прочитайте подсказки\u00a0— они объяснят, как исправить",
+                startTest: "Начать тест",
+                courseBlocks: "Блоки теста",
+                onboardingStep1: "Нажмите на\u00a0области, где вы\u00a0видите ошибки в\u00a0оформлении слайда. Количество ошибок указано в\u00a0правом верхнем углу.",
+                onboardingStep2: "Нажмите кнопку «Проверить», чтобы узнать, все\u00a0ли вы\u00a0нашли.",
+                onboardingStep3: "Описание ошибок и\u00a0советы появятся в\u00a0правой части интерфейса.",
+                onboardingDismiss: "Нажмите в\u00a0любом месте, чтобы начать",
                 locked: "Заблокировано",
                 completed: "Пройдено",
                 found: "Найдено",
                 missed: "Пропущено",
                 allComplete: "Все уровни пройдены!",
-                masterDesigner: "Вы освоили визуальное восприятие!",
+                masterDesigner: "Вы\u00a0освоили визуальное восприятие!",
                 startOver: "Начать заново",
                 levels: {
                     alignment: "Выравнивание",
                     composition: "Композиция",
                     typography: "Типографика",
                     graphics: "Графика",
-                    dataCharts: "Данные и графики"
+                    dataCharts: "Данные и\u00a0графики"
                 }
             }
         };
 
-        // ========== GAME DATA (DUMMY - Replace with real content) ==========
+        // ========== GAME DATA ==========
+        function slidePath(name) {
+            const lang = currentLang === 'en' ? 'en' : 'ru';
+            return `slides/${lang}/${name}`;
+        }
+
+        function zoneCoords(zone) {
+            let c;
+            if (currentLang === 'en' && zone.enX != null) {
+                c = { x: zone.enX, y: zone.enY, width: zone.enWidth, height: zone.enHeight };
+            } else {
+                c = { x: zone.x, y: zone.y, width: zone.width, height: zone.height };
+            }
+            // Clamp to non-negative so zones aren't clipped by overflow:hidden
+            if (c.x < 0) { c.width += c.x; c.x = 0; }
+            if (c.y < 0) { c.height += c.y; c.y = 0; }
+            return c;
+        }
+
         const gameData = {
             levels: [
                 {
@@ -1199,42 +1744,37 @@
                     titleKey: "alignment",
                     slides: [
                         {
-                            image: "slides/1_1.jpg",
-                            correctImage: "slides/1_1_correct.jpg",
+                            file: "1_1",
                             zones: [
-                                { x: 60, y: 17.5, width: 8.5, height: 64.2, tipRu: "Заголовок и контент под ним не выровнены между собой по левому краю, хотя все элементы имеют левое выравнивание", tipEn: "The heading and the content below it are not left-aligned with each other, even though all elements use left alignment" },
-                                { x: 93.1, y: 18.3, width: 7.1, height: 63.1, tipRu: "Контент расположен слишком близко к краю слайда. Всегда соблюдайте поля слайда и пользуйтесь направляющими!", tipEn: "The content is placed too close to the edge of the slide. Always respect slide margins and use guides!" }
+                                { x: 60, y: 17.5, width: 8.5, height: 64.2, enX: 65.7, enY: 16.3, enWidth: 7.2, enHeight: 65.6, tipRu: "Заголовок и\u00a0контент под ним не\u00a0выровнены между собой по\u00a0левому краю, хотя все элементы имеют левое выравнивание", tipEn: "The heading and the content below it are not left-aligned with each other, even though all elements use left alignment" },
+                                { x: 93.1, y: 18.3, width: 7.1, height: 63.1, tipRu: "Контент расположен слишком близко к\u00a0краю слайда. Всегда соблюдайте поля слайда и\u00a0пользуйтесь направляющими!", tipEn: "The content is placed too close to the edge of the slide. Always respect slide margins and use guides!" }
                             ]
                         },
                         {
-                            image: "slides/1_2.jpg",
-                            correctImage: "slides/1_2_correct.jpg",
+                            file: "1_2",
                             zones: [
-                                { x: 4.7, y: 22.5, width: 82.1, height: 9.4, tipRu: "Текстовые блоки не выровнены по верхнему краю", tipEn: "The text blocks are not aligned along the top edge" },
+                                { x: 4.7, y: 22.5, width: 82.1, height: 9.4, tipRu: "Текстовые блоки не\u00a0выровнены по\u00a0верхнему краю", tipEn: "The text blocks are not aligned along the top edge" },
                                 { x: 25.9, y: 65.3, width: 5.2, height: 24.7, group: 1, tipRu: "Разное расстояние между одинаковыми карточками", tipEn: "Uneven spacing between identical cards" },
                                 { x: 50.2, y: 65, width: 4.1, height: 25.2, group: 1 },
                                 { x: 73, y: 64.5, width: 4.8, height: 25.2, group: 1 },
-                                { x: 95.7, y: 64.3, width: 4.1, height: 25.9, tipRu: "Объект слишком близко к краю слайда", tipEn: "The object is too close to the edge of the slide" }
+                                { x: 95.7, y: 64.3, width: 4.1, height: 25.9, tipRu: "Объект слишком близко к\u00a0краю слайда", tipEn: "The object is too close to the edge of the slide" }
                             ]
                         },
                         {
-                            image: "slides/1_3.jpg",
-                            correctImage: "slides/1_3_correct.jpg",
+                            file: "1_3",
                             zones: [
-                                { x: 17.1, y: 6.3, width: 60.5, height: 27.2, tipRu: "Заголовок смещён влево, хотя в данном случае должен быть выровнен по центру слайда", tipEn: "The heading is shifted to the left, whereas in this case it should be centered on the slide" },
-                                { x: -1.2, y: 32, width: 7.4, height: 33.5, tipRu: "Текст расположен слишком близко к краю слайда", tipEn: "The text is placed too close to the edge of the slide" },
-                                { x: 77.8, y: 44.2, width: 17.2, height: 10.8, tipRu: "Подпись под цифрой расположена ниже, чем в других аналогичных случаях", tipEn: "The caption under the number is positioned lower than in other similar cases" },
-                                { x: 96.3, y: 37.3, width: 3.9, height: 29.3, tipRu: "Текст расположен слишком близко к краю слайда", tipEn: "The text is placed too close to the edge of the slide" }
+                                { x: 17.1, y: 6.3, width: 60.5, height: 27.2, tipRu: "Заголовок смещён влево, хотя в\u00a0данном случае должен быть выровнен по\u00a0центру слайда", tipEn: "The heading is shifted to the left, whereas in this case it should be centered on the slide" },
+                                { x: -1.2, y: 32, width: 7.4, height: 33.5, enX: -1.1, enY: 31.4, enWidth: 7.7, enHeight: 24.7, tipRu: "Текст расположен слишком близко к\u00a0краю слайда", tipEn: "The text is placed too close to the edge of the slide" },
+                                { x: 77.8, y: 44.2, width: 17.2, height: 10.8, enX: 80.1, enY: 39.9, enWidth: 17.4, enHeight: 11.1, tipRu: "Подпись под цифрой расположена ниже, чем в\u00a0других аналогичных случаях", tipEn: "The caption under the number is positioned lower than in other similar cases" },
+                                { x: 96.3, y: 37.3, width: 3.9, height: 29.3, enX: 97.2, enY: 35.4, enWidth: 2.9, enHeight: 25.2, tipRu: "Текст расположен слишком близко к\u00a0краю слайда", tipEn: "The text is placed too close to the edge of the slide" }
                             ]
                         },
                         {
-                            image: "slides/1_4.jpg",
-                            correctImage: "slides/1_4_correct.jpg",
+                            file: "1_4",
                             zones: [
-                                { x: 51.2, y: 41, width: 21.5, height: 12.7, tipRu: "Текст этого блока смещён ниже остальных", tipEn: "The text in this block is shifted lower than the rest" },
                                 { x: 48.3, y: 23, width: 3.5, height: 58.6, tipRu: "Разное расстояние между одинаковыми карточками", tipEn: "Uneven spacing between identical cards" },
-                                { x: 27.3, y: 42.9, width: 5.7, height: 35.9, tipRu: "Текстовые блоки не выровнены между собой, а их отступ от левого края карточки отличается от других карточек", tipEn: "The text blocks are not aligned with each other, and their left margin differs from that of the other cards" },
-                                { x: 73.2, y: 42.4, width: 4.1, height: 37.4, tipRu: "Расстояние между краем фигуры и текстом больше, чем на других карточках", tipEn: "The spacing between the shape edge and the text is larger than on the other cards" }
+                                { x: 27.3, y: 42.9, width: 5.7, height: 35.9, tipRu: "Текстовые блоки не\u00a0выровнены между собой, а\u00a0их отступ от\u00a0левого края карточки отличается от\u00a0других карточек", tipEn: "The text blocks are not aligned with each other, and their left margin differs from that of the other cards" },
+                                { x: 53.1, y: 38.8, width: 17.2, height: 14.8, tipRu: "Текст этого блока смещён ниже остальных", tipEn: "The text in this block is shifted lower than the rest" }
                             ]
                         }
                     ]
@@ -1243,121 +1783,151 @@
                     id: "composition",
                     titleKey: "composition",
                     slides: [
-                        {
-                            image: "slides/composition_1.jpg",
-                            correctImage: "slides/composition_1_correct.jpg",
-                            zones: [
-                                { x: 5, y: 5, width: 20, height: 15, tipEn: "Too much empty space in the corner. Balance the visual weight.", tipRu: "Слишком много пустого пространства в углу. Сбалансируйте визуальный вес." },
-                                { x: 40, y: 35, width: 25, height: 30, tipEn: "The focal point is lost. Create clear visual hierarchy.", tipRu: "Фокусная точка потеряна. Создайте четкую визуальную иерархию." }
-                            ]
-                        },
-                        {
-                            image: "slides/composition_2.jpg",
-                            correctImage: "slides/composition_2_correct.jpg",
-                            zones: [
-                                { x: 10, y: 45, width: 35, height: 25, tipEn: "Elements are too crowded. Add breathing room.", tipRu: "Элементы слишком скучены. Добавьте воздуха." },
-                                { x: 70, y: 20, width: 20, height: 20, tipEn: "This element feels disconnected. Group related items together.", tipRu: "Этот элемент выглядит оторванным. Группируйте связанные элементы вместе." }
-                            ]
-                        },
-                        {
-                            image: "slides/composition_3.jpg",
-                            correctImage: "slides/composition_3_correct.jpg",
-                            zones: [
-                                { x: 25, y: 10, width: 50, height: 20, tipEn: "The header dominates too much. Reduce its visual weight.", tipRu: "Заголовок слишком доминирует. Уменьшите его визуальный вес." },
-                                { x: 15, y: 70, width: 30, height: 20, tipEn: "Poor use of the rule of thirds. Reposition key elements.", tipRu: "Плохое использование правила третей. Переместите ключевые элементы." }
-                            ]
-                        }
+                        { file: "2_1", zones: [
+                            { x: 66.7, y: 7.5, width: 29.3, height: 9.2, tipRu: "Слишком большой логотип. Он\u00a0должен быть заметным на\u00a0слайде, но\u00a0при этом не\u00a0перетягивать на\u00a0себя внимание", tipEn: "The logo is too large. It should be visible on the slide, but not draw too much attention to itself" },
+                            { x: 7, y: 26.7, width: 17.4, height: 9.7, group: 1, tipRu: "Недостаточный контраст между заголовком и\u00a0основным текстом. Из-за этого они визуально сливаются", tipEn: "Insufficient contrast between the heading and the body text. This causes them to visually blend together" },
+                            { x: 30.6, y: 26.7, width: 16.6, height: 9.9, group: 1 },
+                            { x: 53, y: 26.4, width: 15.7, height: 10.1, group: 1 },
+                            { x: 75.2, y: 26.7, width: 14.4, height: 9.7, group: 1 },
+                            { x: 6.9, y: 54.2, width: 14.6, height: 9.8, group: 1 },
+                            { x: 30.6, y: 54.1, width: 14.9, height: 10.5, group: 1 },
+                            { x: 52.7, y: 54.2, width: 16.3, height: 10.1, group: 1 },
+                            { x: 75.2, y: 54.2, width: 15.5, height: 10.1, group: 1 },
+                            { x: 25.6, y: 22.6, width: 4.1, height: 54.6, tipRu: "Расстояние между первым и\u00a0вторым столбцами больше, чем между остальными", tipEn: "The spacing between the first and second columns is larger than between the others" }
+                        ] },
+                        { file: "2_2", zones: [
+                            { x: 29.7, y: 32.9, width: 4.8, height: 57.8, enX: 31.7, enY: 32.3, enWidth: 5.5, enHeight: 58.2, tipRu: "Несоблюдение принципа близости. Расстояние между связанными элементами должно быть меньше, чем расстояние от\u00a0них до\u00a0других элементов. Если проще: текст должен быть ближе к\u00a0той иконке, к\u00a0которой он\u00a0относится, чем к\u00a0другим элементам слайда", tipEn: "Violation of the proximity principle. The spacing between related elements should be smaller than the spacing between them and other elements. Simply put: the text should be closer to the icon it belongs to than to other elements on the slide" },
+                            { x: 58.3, y: 73.6, width: 3.7, height: 22.5, group: 1, enX: 58.1, enY: 35.6, enWidth: 3.8, enHeight: 58.2 },
+                            { x: 2.8, y: 4.8, width: 58.2, height: 27.3, group: 2, tipRu: "Отсутствие воздуха на\u00a0слайде. Не\u00a0старайтесь сделать крупнее всё, что только можно. Это, вопреки ожиданиям, только усложнит считывание контента", tipEn: "Lack of white space on the slide. Don't try to make everything as large as possible. Contrary to expectations, this only makes the content harder to read" },
+                            { x: 3, y: 32, width: 24.6, height: 58.8, group: 2 },
+                            { x: 35.8, y: 32.5, width: 21.7, height: 61.2, group: 2, enX: 38.6, enY: 32.5, enWidth: 19.2, enHeight: 59.9 }
+                        ] },
+                        { file: "2_3", zones: [
+                            { x: 4.4, y: 7.6, width: 40, height: 14, tipRu: "Слишком большой логотип. Он\u00a0должен быть заметным на\u00a0слайде, но\u00a0при этом не\u00a0перетягивать на\u00a0себя внимание", tipEn: "The logo is too large. It should be visible on the slide, but not draw too much attention to itself" },
+                            { x: 3.9, y: 53.6, width: 31.7, height: 7.7, tipRu: "Несоблюдение принципа близости. Расстояние между строчками одного предложения не\u00a0должно быть больше, чем расстояние от\u00a0этого предложения до\u00a0другого текстового блока", tipEn: "Violation of the proximity principle. The line spacing within a sentence should not be greater than the spacing between that sentence and another text block" },
+                            { x: 64.5, y: 38.6, width: 19, height: 14.8, tipRu: "Недостаточный контраст между заголовком и\u00a0основным текстом", tipEn: "Insufficient contrast between the heading and the body text" }
+                        ] }
                     ]
                 },
                 {
                     id: "typography",
                     titleKey: "typography",
                     slides: [
-                        {
-                            image: "slides/typography_1.jpg",
-                            correctImage: "slides/typography_1_correct.jpg",
-                            zones: [
-                                { x: 10, y: 15, width: 40, height: 12, tipEn: "Too many font styles. Limit to 2-3 fonts maximum.", tipRu: "Слишком много стилей шрифтов. Ограничьтесь 2-3 шрифтами максимум." },
-                                { x: 15, y: 40, width: 70, height: 25, tipEn: "Line length is too long. Keep it to 50-75 characters.", tipRu: "Длина строки слишком большая. Держите её в пределах 50-75 символов." },
-                                { x: 20, y: 75, width: 25, height: 15, tipEn: "Poor contrast between text and background.", tipRu: "Плохой контраст между текстом и фоном." }
-                            ]
-                        },
-                        {
-                            image: "slides/typography_2.jpg",
-                            correctImage: "slides/typography_2_correct.jpg",
-                            zones: [
-                                { x: 30, y: 20, width: 40, height: 30, tipEn: "Line spacing is too tight. Increase leading for readability.", tipRu: "Межстрочный интервал слишком маленький. Увеличьте для читаемости." },
-                                { x: 10, y: 60, width: 35, height: 15, tipEn: "All caps text is hard to read in long form. Use sentence case.", tipRu: "Текст заглавными буквами трудно читать. Используйте обычный регистр." }
-                            ]
-                        },
-                        {
-                            image: "slides/typography_3.jpg",
-                            correctImage: "slides/typography_3_correct.jpg",
-                            zones: [
-                                { x: 5, y: 30, width: 45, height: 20, tipEn: "Orphans and widows make text look unpolished. Adjust text flow.", tipRu: "Висячие строки делают текст неаккуратным. Настройте переносы." },
-                                { x: 55, y: 50, width: 30, height: 25, tipEn: "Font size is too small for the viewing distance.", tipRu: "Размер шрифта слишком маленький для расстояния просмотра." }
-                            ]
-                        }
+                        { file: "3_1", zones: [
+                            { x: 64.3, y: 48, width: 26.1, height: 10.7, tipRu: "Шрифт отличается от\u00a0других заголовков", tipEn: "The font differs from the other headings" },
+                            { x: 73.1, y: 59.9, width: 4, height: 4.3, enX: 75.9, enY: 62.4, enWidth: 4.4, enHeight: 5.9, tipRu: "Двойной пробел", tipEn: "Double space" },
+                            { x: 50, y: 59.6, width: 4.3, height: 5, enX: 21.2, enY: 62.6, enWidth: 4.3, enHeight: 5.8, tipRu: "Предлоги и\u00a0союзы лучше не\u00a0оставлять на\u00a0конце строки. Чтобы перенести нужный символ на\u00a0следующую строчку без добавления отступа между абзацами, поставьте курсор перед ним и\u00a0нажмите Shift+Enter", tipEn: "It's best not to leave prepositions and conjunctions at the end of a line. To move a character to the next line without adding paragraph spacing, place the cursor before it and press Shift+Enter" }
+                        ] },
+                        { file: "3_2", zones: [
+                            { x: 58.4, y: 8.6, width: 6.7, height: 7.7, enX: 72.6, enY: 7.1, enWidth: 7.9, enHeight: 10.1, tipRu: "Двойной пробел", tipEn: "Double space" },
+                            { x: 7.5, y: 44.7, width: 23.9, height: 38.8, enX: 7.7, enY: 44.6, enWidth: 22.4, enHeight: 34.2, tipRu: "Слишком большое межстрочное расстояние. Строки текста не\u00a0должны слипаться, но\u00a0и\u00a0распадаться тоже не\u00a0должны", tipEn: "The line spacing is too large. Lines of text shouldn't stick together, but they shouldn't fall apart either" },
+                            { x: 7.6, y: 30.6, width: 22.5, height: 11, group: 1, tipRu: "Слишком маленькое межстрочное расстояние. Строки текста не\u00a0должны слипаться", tipEn: "The line spacing is too small. Lines of text shouldn't stick together" },
+                            { x: 68, y: 30.2, width: 21.7, height: 11.6, group: 1 },
+                            { x: 37.6, y: 30.5, width: 21.1, height: 10.7, tipRu: "Размер шрифта меньше, чем в\u00a0других аналогичных заголовках. Межстрочное расстояние слишком маленькое", tipEn: "The font size is smaller than in other similar headings. The line spacing is too small" },
+                            { x: 37.6, y: 57.4, width: 24.5, height: 10.1, enX: 37.8, enY: 53.5, enWidth: 23.2, enHeight: 9.2, tipRu: "Отступ между абзацами лучше не\u00a0добавлять пустой строчкой. Интервал между абзацами настраивается в\u00a0меню \u00abмеждустрочный интервал\u00bb на\u00a0вкладке \u00abГлавная\u00bb. Выбирайте его значение в\u00a0два раза меньше, чем размер шрифта", tipEn: "Paragraph spacing should not be added with an empty line. The spacing between paragraphs is configured in the \"Line Spacing\" menu on the \"Home\" tab. Set it to half the font size" },
+                            { x: 67.1, y: 54.4, width: 23.7, height: 7.2, enX: 67.7, enY: 49.8, enWidth: 22.7, enHeight: 7.5, tipRu: "Отсутствие отступа между абзацами / пунктами. Добавить отступы можно через меню \u00abмеждустрочный интервал\u00bb на\u00a0вкладке \u00abГлавная\u00bb", tipEn: "No spacing between paragraphs/bullet points. You can add spacing through the \"Line Spacing\" menu on the \"Home\" tab" }
+                        ] },
+                        { file: "3_3", zones: [
+                            { x: 27.6, y: 26.5, width: 10.9, height: 6, tipRu: "Шрифт отличается от\u00a0других аналогичных текстовых блоков", tipEn: "The font differs from other similar text blocks" },
+                            { x: 82.8, y: 39.1, width: 2.9, height: 3.7, enX: 82.2, enY: 40.1, enWidth: 2.9, enHeight: 5.4, tipRu: "Висячий предлог лучше перенести на\u00a0следующую строчку", tipEn: "A dangling preposition should be moved to the next line" },
+                            { x: 4.8, y: 71.2, width: 11.6, height: 5.5, tipRu: "Строчка отвалилась от\u00a0остального текста. Это произошло, скорее всего, при переносе части текста на\u00a0новую строку. Если вы\u00a0хотите поправить переносы внутри текстового блока, делайте это сочетанием клавиш Shift+Enter, а\u00a0не\u00a0просто Enter", tipEn: "A line has separated from the rest of the text. This happens when you try to move part of the text to a new line using Enter. Use Shift+Enter instead" },
+                            { x: 4.4, y: 39.2, width: 11.8, height: 7.1, group: 1, tipRu: "Текст слишком мелкий даже для презентации под рассылку. Увеличивать его на\u00a0максимум свободного пространства тоже не\u00a0нужно\u00a0— всегда помните про баланс", tipEn: "The text is too small even for an email presentation. But you shouldn't maximize it to fill all the free space either\u00a0\u2014 always keep balance in mind" },
+                            { x: 27.6, y: 39.2, width: 11, height: 6.8, group: 1 },
+                            { x: 49.7, y: 39.3, width: 9.6, height: 8.4, group: 1 },
+                            { x: 72.8, y: 38.8, width: 9.3, height: 9.4, group: 1 },
+                            { x: 27.4, y: 68.8, width: 10.9, height: 7.2, group: 1 },
+                            { x: 49.9, y: 68.2, width: 11.7, height: 7.8, group: 1 },
+                            { x: 72.8, y: 68, width: 11.2, height: 7.6, group: 1 }
+                        ] },
+                        { file: "3_4", zones: [
+                            { x: 23.2, y: 45.1, width: 11.8, height: 5.6, enX: 18.6, enY: 44.2, enWidth: 15, enHeight: 6.9, tipRu: "Размер шрифта в\u00a0этом блоке меньше, чем в\u00a0остальных", tipEn: "The font size in this block is smaller than in the others" },
+                            { x: 4.7, y: 74.8, width: 90, height: 6, enX: 4.4, enY: 78.8, enWidth: 92, enHeight: 4.8, tipRu: "Строка слишком длинная. Читать такой текст некомфортно, особенно на\u00a0большом экране", tipEn: "The line is too long. Reading such text is uncomfortable, especially on a large screen" },
+                            { x: 4.9, y: 80.9, width: 61.9, height: 4.8, enX: 4.6, enY: 83.7, enWidth: 53.5, enHeight: 3.5, tipRu: "Не\u00a0добавляйте отступы между абзацами с\u00a0помощью пустой строки. Интервал можно настроить в\u00a0меню \u00abмеждустрочный интервал\u00bb (ну, вы\u00a0уже про это помните, да? :)\u00a0)", tipEn: "Don't add spacing between paragraphs using an empty line. The spacing can be configured in the \"Line Spacing\" menu (well, you already remember that, right? :)" }
+                        ] }
                     ]
                 },
                 {
                     id: "graphics",
                     titleKey: "graphics",
                     slides: [
-                        {
-                            image: "slides/graphics_1.jpg",
-                            correctImage: "slides/graphics_1_correct.jpg",
-                            zones: [
-                                { x: 20, y: 25, width: 30, height: 35, tipEn: "Image is pixelated. Use higher resolution assets.", tipRu: "Изображение пикселизировано. Используйте ресурсы более высокого разрешения." },
-                                { x: 60, y: 15, width: 25, height: 20, tipEn: "Icon style is inconsistent with others on the slide.", tipRu: "Стиль иконки не соответствует другим на слайде." }
-                            ]
-                        },
-                        {
-                            image: "slides/graphics_2.jpg",
-                            correctImage: "slides/graphics_2_correct.jpg",
-                            zones: [
-                                { x: 15, y: 35, width: 35, height: 30, tipEn: "Image aspect ratio is distorted. Maintain proportions when scaling.", tipRu: "Пропорции изображения искажены. Сохраняйте пропорции при масштабировании." },
-                                { x: 65, y: 55, width: 20, height: 25, tipEn: "Drop shadow is too harsh. Use subtle, natural shadows.", tipRu: "Тень слишком резкая. Используйте мягкие, естественные тени." }
-                            ]
-                        },
-                        {
-                            image: "slides/graphics_3.jpg",
-                            correctImage: "slides/graphics_3_correct.jpg",
-                            zones: [
-                                { x: 10, y: 20, width: 40, height: 25, tipEn: "Colors clash with each other. Use a harmonious color palette.", tipRu: "Цвета конфликтуют друг с другом. Используйте гармоничную цветовую палитру." },
-                                { x: 55, y: 60, width: 30, height: 20, tipEn: "Decorative elements distract from the content.", tipRu: "Декоративные элементы отвлекают от содержания." }
-                            ]
-                        }
+                        { file: "4_1", zones: [
+                            { x: 57.6, y: 28.4, width: 16.7, height: 9.2, tipRu: "Тень под текстом. В\u00a0крайне редких случаях это может быть уместно (на\u00a0титульном слайде при огромном размере шрифта и\u00a0соответствующем фирменном стиле). В\u00a0остальных случаях тень под текстом только загрязняет слайд", tipEn: "Shadow under the text. In very rare cases this may be appropriate (on a title slide with a very large font size and a matching brand style). In all other cases, a text shadow only clutters the slide" },
+                            { x: 4, y: 20.7, width: 46.5, height: 57, tipRu: "Контур вокруг текста. Он\u00a0здесь ничем не\u00a0оправдан и\u00a0совершенно не\u00a0нужен", tipEn: "Outline around the text. It is not justified here and completely unnecessary" },
+                            { x: 57.5, y: 21.8, width: 3.6, height: 6.1, group: 1, tipRu: "Разный стиль и/или размер иконок. Следите за\u00a0тем, чтобы стиль, толщина начертания и\u00a0визуальный размер иконок были схожими", tipEn: "Inconsistent style and/or size of icons. Make sure the style, stroke weight, and visual size of the icons are similar" },
+                            { x: 80.2, y: 21.6, width: 3.3, height: 6.7, group: 1 },
+                            { x: 57.4, y: 48.1, width: 3.9, height: 8, group: 1 },
+                            { x: 80.5, y: 49.4, width: 3.2, height: 6.7, group: 1 },
+                            { x: 57.8, y: 37.9, width: 18.8, height: 8.9, group: 2, tipRu: "Неудачно подобранный цвет текста. Визуально приглушать какой-то текст\u00a0— вполне нормально, но\u00a0следите за\u00a0тем, чтобы он\u00a0хорошо читался в\u00a0тех условиях, в\u00a0которых будет использоваться презентация", tipEn: "Poorly chosen text color. Visually muting certain text is perfectly fine, but make sure it remains readable in the conditions where the presentation will be used" },
+                            { x: 80.4, y: 37.9, width: 14.1, height: 8.6, group: 2 },
+                            { x: 80.2, y: 65.1, width: 14.8, height: 9.5, group: 2 },
+                            { x: 57.7, y: 65.2, width: 15.1, height: 9.7, group: 2 }
+                        ] },
+                        { file: "4_2", zones: [
+                            { x: 21.7, y: 12.4, width: 11.9, height: 22, tipRu: "Плохое качество изображения. Не\u00a0допускайте, чтобы на\u00a0фотографиях или иллюстрациях в\u00a0вашей презентации были видны пиксели", tipEn: "Poor image quality. Do not allow visible pixels in photos or illustrations in your presentation" },
+                            { x: 66.7, y: 38.8, width: 11.3, height: 21.8, tipRu: "Испорченные пропорции изображения. Всегда изменяйте размер изображения только за\u00a0углы и\u00a0держите Shift", tipEn: "Distorted image proportions. Always resize images by dragging from the corners while holding Shift" },
+                            { x: 36.8, y: 13.6, width: 26.4, height: 72.7, tipRu: "Лишний / слишком визуально шумный фон. Обилие графики на\u00a0слайде не\u00a0всегда лучший выбор. Фотографии и\u00a0иллюстрации должны помогать вам доносить идеи, а\u00a0не\u00a0мешать их считывать", tipEn: "Unnecessary or overly busy background. An abundance of graphics on a slide is not always the best choice. Photos and illustrations should help you convey ideas, not make them harder to read" },
+                            { x: 23, y: 8.4, width: 55.8, height: 2.5, group: 1, tipRu: "Слишком грубые тени. В\u00a0тени нет ничего плохого (если она не\u00a0под текстом там, где её быть не\u00a0должно), но\u00a0не\u00a0нужно делать её слишком тёмной и/или с\u00a0чёткой границей. Лёгкая тень будет смотреться гораздо лучше", tipEn: "Shadows are too harsh. There is nothing wrong with shadows (as long as they are not under text where they shouldn't be), but don't make them too dark and/or with a sharp edge. A subtle shadow will look much better" },
+                            { x: 66, y: 33.2, width: 27.6, height: 3.5, group: 1 },
+                            { x: 66.8, y: 60.5, width: 26, height: 2.9, group: 1 },
+                            { x: 66.2, y: 85.8, width: 27.5, height: 3.7, group: 1 },
+                            { x: 6.5, y: 59.5, width: 27.6, height: 3.3, group: 1 },
+                            { x: 6.9, y: 85.2, width: 28, height: 3.8, group: 1 },
+                            { x: 7, y: 33.6, width: 27.1, height: 2.9, group: 1 }
+                        ] },
+                        { file: "4_3", zones: [
+                            { x: 0.8, y: 1.2, width: 25.1, height: 97.6, tipRu: "Излишние эффекты искажают изображение и\u00a0добавляют визуальный шум на\u00a0слайд", tipEn: "Excessive effects distort the image and add visual noise to the slide" },
+                            { x: 26.3, y: 49.5, width: 23.8, height: 48.5, tipRu: "Радиус скругления углов отличается от\u00a0остальных фигур. Также обратите внимание, что большое скругление съедает полезное пространство фигуры", tipEn: "The corner radius differs from the other shapes. Also note that a large radius eats into the usable space of the shape" },
+                            { x: 50.5, y: 49.4, width: 5.6, height: 48.1, tipRu: "Изображение съехало в\u00a0сторону относительно маски или фигуры, в\u00a0которую оно вписано", tipEn: "The image has shifted to the side relative to the mask or shape it is placed in" }
+                        ] },
+                        { file: "4_4", zones: [
+                            { x: 5.7, y: 31, width: 38.1, height: 36.5, enX: 9.5, enY: 26.8, enWidth: 29.8, enHeight: 44.8, tipRu: "С\u00a0градиентами надо быть осторожнее. Особенно, когда это градиент на\u00a0градиенте", tipEn: "Be careful with gradients. Especially when it's a gradient on top of a gradient" },
+                            { x: 56.4, y: 12.2, width: 32, height: 11.2, tipRu: "Цвет выбивается из\u00a0общей палитры и\u00a0плохо контрастирует с\u00a0белым фоном", tipEn: "The color stands out from the overall palette and has poor contrast against the white background" },
+                            { x: 56.5, y: 26.5, width: 5.2, height: 5.1, group: 1, tipRu: "Не\u00a0стоит делать буллиты в\u00a0списках слишком большими", tipEn: "Don't make bullet points in lists too large" },
+                            { x: 57, y: 43.5, width: 4.4, height: 5.4, group: 1 },
+                            { x: 57.1, y: 64.1, width: 4.4, height: 5.9, group: 1, enX: 57.3, enY: 58.4, enWidth: 4.3, enHeight: 7.2 },
+                            { x: 19.7, y: 80.3, width: 9.6, height: 7.2, tipRu: "Чтобы текст в\u00a0кнопке не\u00a0становился синим и\u00a0подчеркнутым, добавляйте ссылку на\u00a0саму кнопку (фигуру), а\u00a0не\u00a0на\u00a0текст", tipEn: "To prevent the button text from turning blue and underlined, add the link to the button (shape) itself, not to the text" }
+                        ] }
                     ]
                 },
                 {
                     id: "dataCharts",
                     titleKey: "dataCharts",
                     slides: [
-                        {
-                            image: "slides/data_1.jpg",
-                            correctImage: "slides/data_1_correct.jpg",
-                            zones: [
-                                { x: 15, y: 20, width: 45, height: 40, tipEn: "3D effects distort data perception. Use flat 2D charts.", tipRu: "3D эффекты искажают восприятие данных. Используйте плоские 2D графики." },
-                                { x: 65, y: 25, width: 25, height: 35, tipEn: "Legend is too far from the chart. Place it closer.", tipRu: "Легенда слишком далеко от графика. Разместите её ближе." }
-                            ]
-                        },
-                        {
-                            image: "slides/data_2.jpg",
-                            correctImage: "slides/data_2_correct.jpg",
-                            zones: [
-                                { x: 10, y: 30, width: 50, height: 35, tipEn: "Y-axis doesn't start at zero, exaggerating differences.", tipRu: "Ось Y не начинается с нуля, что преувеличивает различия." },
-                                { x: 20, y: 70, width: 60, height: 15, tipEn: "Missing data labels. Add values for clarity.", tipRu: "Отсутствуют подписи данных. Добавьте значения для ясности." }
-                            ]
-                        },
-                        {
-                            image: "slides/data_3.jpg",
-                            correctImage: "slides/data_3_correct.jpg",
-                            zones: [
-                                { x: 25, y: 15, width: 50, height: 45, tipEn: "Too many pie slices. Combine smaller categories or use a bar chart.", tipRu: "Слишком много секторов. Объедините мелкие категории или используйте столбчатую диаграмму." },
-                                { x: 10, y: 65, width: 35, height: 20, tipEn: "Color coding is confusing. Use intuitive color associations.", tipRu: "Цветовое кодирование запутанное. Используйте интуитивные цветовые ассоциации." }
-                            ]
-                        }
+                        { file: "5_1", zones: [
+                            { x: 5.6, y: 43.1, width: 16.5, height: 4.6, group: 1, tipRu: "Текст в\u00a0таблице стоит выравнивать по\u00a0левому краю", tipEn: "Text in tables should be left-aligned" },
+                            { x: 5.8, y: 52, width: 16.3, height: 7.1, group: 1 },
+                            { x: 5.9, y: 62.9, width: 16.2, height: 7.3, group: 1 },
+                            { x: 5.9, y: 74, width: 16.1, height: 6.7, group: 1 },
+                            { x: 5.9, y: 84.6, width: 16.2, height: 6.8, group: 1, enX: 4.5, enY: 84.4, enWidth: 17.4, enHeight: 6.9 },
+                            { x: 4.4, y: 48.6, width: 90.8, height: 2.7, group: 2, tipRu: "Границы ячеек в\u00a0таблице не\u00a0должны быть слишком толстыми. Соблюдайте баланс между их видимостью и\u00a0лишним визуальным шумом", tipEn: "Cell borders in a table should not be too thick. Strike a balance between their visibility and unnecessary visual noise" },
+                            { x: 4.7, y: 59.6, width: 90.6, height: 2.5, group: 2 },
+                            { x: 4.8, y: 70.2, width: 90.6, height: 2.7, group: 2 },
+                            { x: 4.9, y: 81, width: 90.5, height: 2.4, group: 2 },
+                            { x: 27.1, y: 42.2, width: 12.4, height: 5.9, group: 3, enX: 27.8, enY: 42.2, enWidth: 9.7, enHeight: 5.9, tipRu: "Не\u00a0нужно делать весь текст и\u00a0элементы максимально крупными. Старайтесь фокусировать внимание аудитории на\u00a0чём-то одном, а\u00a0всё остальное визуально приглушайте", tipEn: "Don't make all text and elements as large as possible. Try to focus the audience's attention on one thing, and visually tone down everything else" },
+                            { x: 27.4, y: 52.7, width: 11.8, height: 6.5, group: 3, enX: 27.9, enY: 52.7, enWidth: 9.4, enHeight: 6.3 },
+                            { x: 27.5, y: 63.1, width: 11.9, height: 6.8, group: 3, enX: 28, enY: 63.1, enWidth: 9.4, enHeight: 6.5 },
+                            { x: 27.6, y: 74.5, width: 14.2, height: 6, group: 3, enX: 28, enY: 74.4, enWidth: 10.2, enHeight: 6 },
+                            { x: 27.5, y: 84.4, width: 9.9, height: 7.2, group: 3, enX: 27.5, enY: 84.3, enWidth: 14, enHeight: 7.3 },
+                            { x: 80.4, y: 42, width: 11.7, height: 5.6, group: 4, tipRu: "Цифры в\u00a0таблице стоит выравнивать по\u00a0правому краю", tipEn: "Numbers in tables should be right-aligned" },
+                            { x: 80.5, y: 52.8, width: 12.2, height: 5.6, group: 4 },
+                            { x: 80.3, y: 63, width: 10.2, height: 5.9, group: 4 },
+                            { x: 80.4, y: 74, width: 9.5, height: 5.6, group: 4 },
+                            { x: 80.3, y: 84.4, width: 9.6, height: 5.9, group: 4 }
+                        ] },
+                        { file: "5_2", zones: [
+                            { x: 40.7, y: 21.6, width: 52.4, height: 52.5, group: 1, tipRu: "Излишние визуальные эффекты у\u00a0графика", tipEn: "Excessive visual effects on the chart" },
+                            { x: 69.5, y: 74, width: 23.3, height: 2.9, group: 1 },
+                            { x: 52.5, y: 74.9, width: 7.9, height: 5.8, group: 2, tipRu: "Отсутствует подпись столбца. Чаще всего это происходит из-за недостаточной ширины диаграммы или избыточного размера шрифта в\u00a0подписях столбцов", tipEn: "A column label is missing. This usually happens due to insufficient chart width or an oversized font in the column labels" },
+                            { x: 68.6, y: 77.3, width: 8.4, height: 5.2, group: 2 },
+                            { x: 85.9, y: 78.6, width: 7.4, height: 5.9, group: 2 },
+                            { x: 93.5, y: 15.8, width: 6.5, height: 58.2, tipRu: "Ось и\u00a0её подписи здесь не\u00a0нужны, т.к. каждый столбец подписан индивидуально", tipEn: "The axis and its labels are unnecessary here, since each column is labeled individually" }
+                        ] },
+                        { file: "5_3", zones: [
+                            { x: 22.3, y: 36.6, width: 4.7, height: 5.4, tipRu: "Цифра расположена слишком далеко от\u00a0точки, к\u00a0которой относится", tipEn: "The number is placed too far from the data point it belongs to" },
+                            { x: 48.2, y: 52.9, width: 6, height: 13.3, tipRu: "Цифры наслаиваются на\u00a0график и/или друг на\u00a0друга", tipEn: "The numbers overlap the chart and/or each other" },
+                            { x: 2.4, y: 29.8, width: 4.2, height: 64.1, group: 1, tipRu: "Оси и\u00a0подписи излишне акцентные. Фокус внимания должен быть на\u00a0контенте, а\u00a0не\u00a0месяцах. Ось\u00a0Y в\u00a0данном случае, кстати, можно было\u00a0бы совсем удалить, т.к. значения подписаны у\u00a0самих точек", tipEn: "The axes and labels are overly prominent. The focus should be on the content, not the months. The Y axis in this case could actually be removed entirely, since the values are labeled at the data points themselves" },
+                            { x: 6.7, y: 85.9, width: 90.6, height: 8.1, group: 1 }
+                        ] }
                     ]
                 }
             ]
@@ -1369,6 +1939,10 @@
         let currentSlide = 0;
         let levelScore = 0;
         let totalScore = 0;
+        let levelFoundErrors = 0;
+        let levelTotalErrors = 0;
+        let totalFoundErrors = 0;
+        let totalTotalErrors = 0;
         let foundZones = [];
         let clickMarkers = [];
         let isChecked = false;
@@ -1376,57 +1950,78 @@
         let hasSeenOnboarding = false;
 
         // ========== PROGRESS STORAGE ==========
+        let progressCache = null;
+
+        function readProgress() {
+            if (progressCache) return progressCache;
+            try {
+                const saved = localStorage.getItem('visualTrainerProgress');
+                if (saved) {
+                    progressCache = JSON.parse(saved);
+                    return progressCache;
+                }
+            } catch (e) {
+                localStorage.removeItem('visualTrainerProgress');
+            }
+            progressCache = { unlockedLevels: [0], completedLevels: [], totalScore: 0, levelResults: {}, lang: null };
+            return progressCache;
+        }
+
+        function writeProgress() {
+            localStorage.setItem('visualTrainerProgress', JSON.stringify(progressCache));
+        }
+
         function saveProgress() {
-            const progress = {
-                unlockedLevels: getUnlockedLevels(),
-                completedLevels: getCompletedLevels(),
-                totalScore: totalScore,
-                lang: currentLang
-            };
-            localStorage.setItem('visualTrainerProgress', JSON.stringify(progress));
+            const p = readProgress();
+            p.totalScore = totalScore;
+            p.lang = currentLang;
+            writeProgress();
         }
 
         function loadProgress() {
-            const saved = localStorage.getItem('visualTrainerProgress');
-            if (saved) {
-                const progress = JSON.parse(saved);
-                totalScore = progress.totalScore || 0;
-                if (progress.lang) {
-                    currentLang = progress.lang;
-                }
-                return progress;
+            const p = readProgress();
+            totalScore = p.totalScore || 0;
+            // Restore per-level results and recalculate totals
+            const lr = p.levelResults || {};
+            totalFoundErrors = 0;
+            totalTotalErrors = 0;
+            Object.values(lr).forEach(r => {
+                totalFoundErrors += r.found || 0;
+                totalTotalErrors += r.total || 0;
+            });
+            if (p.lang) {
+                currentLang = p.lang;
             }
-            return { unlockedLevels: [0], completedLevels: [], totalScore: 0 };
+            return p;
         }
 
         function getUnlockedLevels() {
-            const progress = JSON.parse(localStorage.getItem('visualTrainerProgress') || '{}');
-            return progress.unlockedLevels || [0];
+            return readProgress().unlockedLevels || [0];
         }
 
         function getCompletedLevels() {
-            const progress = JSON.parse(localStorage.getItem('visualTrainerProgress') || '{}');
-            return progress.completedLevels || [];
+            return readProgress().completedLevels || [];
         }
 
         function unlockLevel(levelIndex) {
-            const unlockedLevels = getUnlockedLevels();
-            if (!unlockedLevels.includes(levelIndex)) {
-                unlockedLevels.push(levelIndex);
-                const progress = JSON.parse(localStorage.getItem('visualTrainerProgress') || '{}');
-                progress.unlockedLevels = unlockedLevels;
-                localStorage.setItem('visualTrainerProgress', JSON.stringify(progress));
+            const p = readProgress();
+            if (!p.unlockedLevels) p.unlockedLevels = [0];
+            if (!p.unlockedLevels.includes(levelIndex)) {
+                p.unlockedLevels.push(levelIndex);
+                writeProgress();
             }
         }
 
         function completeLevel(levelIndex) {
-            const completedLevels = getCompletedLevels();
-            if (!completedLevels.includes(levelIndex)) {
-                completedLevels.push(levelIndex);
-                const progress = JSON.parse(localStorage.getItem('visualTrainerProgress') || '{}');
-                progress.completedLevels = completedLevels;
-                localStorage.setItem('visualTrainerProgress', JSON.stringify(progress));
+            const p = readProgress();
+            if (!p.completedLevels) p.completedLevels = [];
+            if (!p.completedLevels.includes(levelIndex)) {
+                p.completedLevels.push(levelIndex);
             }
+            // Save per-level results (replace, don't accumulate)
+            if (!p.levelResults) p.levelResults = {};
+            p.levelResults[levelIndex] = { found: levelFoundErrors, total: levelTotalErrors };
+            writeProgress();
             // Unlock next level
             if (levelIndex + 1 < gameData.levels.length) {
                 unlockLevel(levelIndex + 1);
@@ -1535,39 +2130,114 @@
         }
 
         function checkOnboarding() {
-            hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding') === 'true';
-            if (!hasSeenOnboarding && currentLevel === 0 && currentSlide === 0) {
-                setTimeout(showOnboarding, 500);
-            }
+            // Onboarding now only shows via info button in game header
         }
 
         function selectLanguage(lang) {
             currentLang = lang;
             saveProgress();
+            updateLangUI();
             renderLevels();
             showScreen('levels-screen');
         }
 
+        function switchLang(lang) {
+            currentLang = lang;
+            saveProgress();
+            updateLangUI();
+            // Update URL param without reload
+            const url = new URL(window.location);
+            url.searchParams.set('lang', lang);
+            history.replaceState(null, '', url);
+            renderLevels();
+            // If in game, refresh slide image and dynamic texts
+            if (document.getElementById('game-screen').classList.contains('active')) {
+                const level = gameData.levels[currentLevel];
+                const slide = level.slides[currentSlide];
+                // Swap slide image to current language
+                const img = document.getElementById('slide-image');
+                if (showingCorrect) {
+                    img.src = slidePath(slide.file + '_correct.jpg');
+                } else {
+                    img.src = slidePath(slide.file + '.jpg');
+                }
+                document.getElementById('game-level-info').textContent =
+                    `${t('slide')} ${currentSlide + 1}/${level.slides.length}: ${t(`levels.${level.titleKey}`)}`;
+                document.getElementById('game-hint').textContent =
+                    getMistakesHintText(countUniqueErrors(slide.zones));
+                // Refresh tips if already checked
+                if (isChecked) {
+                    const tipsContent = document.getElementById('tips-content');
+                    const uniqueZones = getUniqueErrors(slide.zones);
+                    let errorNum = 0;
+                    tipsContent.innerHTML = uniqueZones.map((zone) => {
+                        errorNum++;
+                        const tip = currentLang === 'ru' ? zone.tipRu : zone.tipEn;
+                        const zoneIdx = slide.zones.indexOf(zone);
+                        const found = foundZones.includes(zoneIdx);
+                        return `
+                            <div class="tip-item ${found ? '' : 'missed'}">
+                                <strong>${found ? '✓ ' + t('found') : '✗ ' + t('missed')}</strong>
+                                ${tip}
+                            </div>
+                        `;
+                    }).join('');
+                    // Update correct/original button text
+                    document.getElementById('correct-btn').textContent =
+                        showingCorrect ? t('showOriginal') : t('showCorrect');
+                }
+            }
+            // If on results screen, refresh it
+            if (document.getElementById('results-screen').classList.contains('active')) {
+                showResults();
+            }
+        }
+
+        function updateLangUI() {
+            // Update flag buttons
+            document.getElementById('flag-en').classList.toggle('active', currentLang === 'en');
+            document.getElementById('flag-ru').classList.toggle('active', currentLang === 'ru');
+            // Update logo link
+            document.getElementById('logo-link').href =
+                currentLang === 'ru' ? 'https://kachkovenko.com' : 'https://kachkovenko.design';
+            document.getElementById('footer-feedback').textContent =
+                currentLang === 'ru' ? 'Обратная связь' : 'Send feedback';
+            document.getElementById('footer-copyright').textContent =
+                currentLang === 'ru' ? 'ИП Качковенко А.В. 2026' : 'Kachkovenko.Design Ltd. 2026';
+            document.title = currentLang === 'ru'
+                ? 'Тренажёр визуального восприятия'
+                : 'Visual Perception Trainer';
+            document.documentElement.lang = currentLang;
+        }
+
         function updateUIText() {
-            document.getElementById('levels-title').textContent = t('selectLevel');
-            document.getElementById('levels-subtitle').textContent = t('completeToUnlock');
-            document.getElementById('back-btn').textContent = t('back');
+            document.getElementById('welcome-badge').textContent = t('welcomeBadge');
+            document.getElementById('welcome-title').innerHTML = t('welcomeTitle').replace('\n', '<br>');
+            document.getElementById('welcome-subtitle').textContent = t('welcomeSubtitle');
+            document.getElementById('step1-text').textContent = t('step1');
+            document.getElementById('step2-text').textContent = t('step2');
+            document.getElementById('step3-text').textContent = t('step3');
+            document.getElementById('start-test-btn').textContent = t('startTest');
+            document.getElementById('levels-col-title').textContent = t('courseBlocks');
             document.getElementById('check-btn').textContent = t('check');
             document.getElementById('correct-btn').textContent = t('showCorrect');
             document.getElementById('next-btn').textContent = t('next');
             document.getElementById('tips-title').textContent = t('tipsTitle');
-            document.getElementById('feedback-text').textContent = t('feedbackText');
-            document.getElementById('feedback-btn').textContent = t('sendFeedback');
             document.getElementById('continue-btn').textContent = t('continue');
             document.getElementById('play-again-btn').textContent = t('playAgain');
             document.getElementById('back-to-menu-btn').textContent = t('backToMenu');
             document.getElementById('share-title').textContent = t('shareResult');
             document.getElementById('copy-link-btn').textContent = t('copyLink');
+            document.getElementById('copy-link-btn-ru').textContent = t('copyLink');
+            document.getElementById('share-native-btn').textContent = t('shareNative');
+            document.getElementById('share-buttons-en').style.display = currentLang === 'ru' ? 'none' : 'flex';
+            document.getElementById('share-buttons-ru').style.display = currentLang === 'ru' ? 'flex' : 'none';
             document.getElementById('modal-title').textContent = t('modalTitle');
             document.getElementById('feedback-textarea').placeholder = t('placeholder');
             document.getElementById('cancel-btn').textContent = t('cancel');
             document.getElementById('submit-btn').textContent = t('submit');
-            document.getElementById('overlay-hint').textContent = t('clickToClose');
+
+
         }
 
         function renderLevels() {
@@ -1581,30 +2251,51 @@
                 const isCompleted = completedLevels.includes(index);
                 const levelTitle = t(`levels.${level.titleKey}`);
 
-                let statusText = '';
+                let rowClass = 'level-row';
+                let indicatorContent = index + 1;
+                let meta = '';
                 let lockIcon = '';
-                let cardClass = 'level-card';
+
+                let trailingIcon = '';
 
                 if (isCompleted) {
-                    statusText = `✓ ${t('completed')}`;
-                    cardClass += ' completed';
+                    rowClass += ' completed';
+                    indicatorContent = '✓';
+                    meta = t('completed');
+                    trailingIcon = '<span class="level-row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></span>';
                 } else if (isUnlocked) {
-                    statusText = getSlidesCountText(level.slides.length);
+                    meta = getSlidesCountText(level.slides.length);
+                    trailingIcon = '<span class="level-row-play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></span>';
                 } else {
-                    statusText = t('locked');
-                    lockIcon = '<span class="lock-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>';
-                    cardClass += ' locked';
+                    rowClass += ' locked';
+                    meta = t('locked');
+                    trailingIcon = '<span class="level-row-lock"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span>';
                 }
 
                 return `
-                    <div class="${cardClass}" onclick="startLevel(${index})" ${!isUnlocked ? 'disabled' : ''}>
-                        ${lockIcon}
-                        <div class="level-number">${index + 1}</div>
-                        <div class="level-title">${levelTitle}</div>
-                        <div class="level-status">${statusText}</div>
+                    <div class="${rowClass}" onclick="startLevel(${index})">
+                        <div class="level-row-indicator">${indicatorContent}</div>
+                        <div class="level-row-info">
+                            <div class="level-row-title">${levelTitle}</div>
+                            <div class="level-row-meta">${meta}</div>
+                        </div>
+                        ${trailingIcon}
                     </div>
                 `;
             }).join('');
+        }
+
+        function startFirstAvailable() {
+            const completedLevels = getCompletedLevels();
+            const unlockedLevels = getUnlockedLevels();
+            let targetLevel = 0;
+            for (let i = 0; i < gameData.levels.length; i++) {
+                if (unlockedLevels.includes(i) && !completedLevels.includes(i)) {
+                    targetLevel = i;
+                    break;
+                }
+            }
+            startLevel(targetLevel);
         }
 
         function startLevel(levelIndex) {
@@ -1614,6 +2305,8 @@
             currentLevel = levelIndex;
             currentSlide = 0;
             levelScore = 0;
+            levelFoundErrors = 0;
+            levelTotalErrors = 0;
             loadSlide();
             showScreen('game-screen');
         }
@@ -1640,11 +2333,15 @@
 
             // Load image (using placeholder for now)
             const img = document.getElementById('slide-image');
-            img.src = slide.image;
+            img.src = slidePath(slide.file + '.jpg');
             img.onerror = function() {
                 // Create placeholder if image doesn't exist
                 this.src = createPlaceholderImage(currentLevel, currentSlide);
             };
+
+            // Show/hide prev button (visibility preserves layout)
+            document.getElementById('prev-btn').style.visibility =
+                currentSlide > 0 ? 'visible' : 'hidden';
 
             // Reset buttons
             document.getElementById('check-btn').style.display = 'inline-block';
@@ -1652,13 +2349,18 @@
             document.getElementById('correct-btn').style.display = 'none';
             document.getElementById('next-btn').style.display = 'none';
             document.getElementById('tips-panel').classList.remove('visible');
-            document.getElementById('feedback-section').classList.remove('visible');
-
             // Add click handler
             wrapper.onclick = handleSlideClick;
 
             // Show onboarding on first slide
             checkOnboarding();
+
+            // Preload next slide and correct version
+            const nextIdx = currentSlide + 1;
+            if (nextIdx < level.slides.length) {
+                new Image().src = slidePath(level.slides[nextIdx].file + '.jpg');
+            }
+            new Image().src = slidePath(slide.file + '_correct.jpg');
         }
 
         function createPlaceholderImage(levelIndex, slideIndex) {
@@ -1704,10 +2406,11 @@
             ctx.lineWidth = 2;
             ctx.setLineDash([10, 10]);
             slide.zones.forEach((zone, i) => {
-                const x = (zone.x / 100) * 1920;
-                const y = (zone.y / 100) * 1080;
-                const w = (zone.width / 100) * 1920;
-                const h = (zone.height / 100) * 1080;
+                const zc = zoneCoords(zone);
+                const x = (zc.x / 100) * 1920;
+                const y = (zc.y / 100) * 1080;
+                const w = (zc.width / 100) * 1920;
+                const h = (zc.height / 100) * 1080;
                 ctx.strokeRect(x, y, w, h);
                 ctx.fillStyle = 'rgba(255, 100, 100, 0.5)';
                 ctx.font = '20px sans-serif';
@@ -1728,17 +2431,52 @@
             const xPercent = ((e.clientX - rect.left) / rect.width) * 100;
             const yPercent = ((e.clientY - rect.top) / rect.height) * 100;
 
+            // Check if click is near an existing marker — if so, remove it
+            const removeRadius = 3; // percent
+            for (let i = clickMarkers.length - 1; i >= 0; i--) {
+                const m = clickMarkers[i];
+                const mx = parseFloat(m.element.style.left);
+                const my = parseFloat(m.element.style.top);
+                const dist = Math.sqrt((xPercent - mx) ** 2 + (yPercent - my) ** 2);
+                if (dist < removeRadius) {
+                    // Remove marker from DOM
+                    m.element.remove();
+                    // If it was a correct hit, unmark the zone
+                    if (m.correct) {
+                        const slide = gameData.levels[currentLevel].slides[currentSlide];
+                        const zone = slide.zones[m.zoneIndex];
+                        // Remove this zone and its group members from foundZones
+                        if (zone.group != null) {
+                            slide.zones.forEach((z, idx) => {
+                                if (z.group === zone.group) {
+                                    foundZones = foundZones.filter(fi => fi !== idx);
+                                }
+                            });
+                        } else {
+                            foundZones = foundZones.filter(fi => fi !== m.zoneIndex);
+                        }
+                    }
+                    clickMarkers.splice(i, 1);
+                    return;
+                }
+            }
+
             // Check if click is in any zone
             const slide = gameData.levels[currentLevel].slides[currentSlide];
             let hitZone = null;
             let hitZoneIndex = -1;
 
+            let hitZoneFound = false;
             slide.zones.forEach((zone, index) => {
-                if (xPercent >= zone.x && xPercent <= zone.x + zone.width &&
-                    yPercent >= zone.y && yPercent <= zone.y + zone.height) {
+                const zc = zoneCoords(zone);
+                if (xPercent >= zc.x && xPercent <= zc.x + zc.width &&
+                    yPercent >= zc.y && yPercent <= zc.y + zc.height) {
                     if (!foundZones.includes(index)) {
                         hitZone = zone;
                         hitZoneIndex = index;
+                    } else {
+                        // Click is in an already-found zone — still a valid hit
+                        hitZoneFound = true;
                     }
                 }
             });
@@ -1761,6 +2499,9 @@
                     });
                 }
                 clickMarkers.push({ element: marker, correct: true, zoneIndex: hitZoneIndex });
+            } else if (hitZoneFound) {
+                // Click is inside an already-found zone (e.g. another zone in a group)
+                clickMarkers.push({ element: marker, correct: true, zoneIndex: -1 });
             } else {
                 clickMarkers.push({ element: marker, correct: false, x: xPercent, y: yPercent });
             }
@@ -1784,6 +2525,8 @@
             const uniqueErrors = countUniqueErrors(slide.zones);
             const foundErrors = countUniqueErrors(slide.zones.filter((z, i) => foundZones.includes(i)));
             levelScore += foundErrors * pointsPerError;
+            levelFoundErrors += foundErrors;
+            levelTotalErrors += uniqueErrors;
 
             // Reveal all markers (change from neutral to correct/incorrect)
             clickMarkers.forEach(markerData => {
@@ -1802,10 +2545,11 @@
             slide.zones.forEach((zone, index) => {
                 const highlight = document.createElement('div');
                 highlight.className = 'zone-highlight';
-                highlight.style.left = `${zone.x}%`;
-                highlight.style.top = `${zone.y}%`;
-                highlight.style.width = `${zone.width}%`;
-                highlight.style.height = `${zone.height}%`;
+                const zc = zoneCoords(zone);
+                highlight.style.left = `${zc.x}%`;
+                highlight.style.top = `${zc.y}%`;
+                highlight.style.width = `${zc.width}%`;
+                highlight.style.height = `${zc.height}%`;
 
                 if (foundZones.includes(index)) {
                     highlight.classList.add('found');
@@ -1824,14 +2568,13 @@
                 const found = foundZones.includes(zoneIdx);
                 return `
                     <div class="tip-item ${found ? '' : 'missed'}">
-                        <strong>${found ? '✓ ' + t('found') : '✗ ' + t('missed')}: Zone ${errorNum}</strong>
+                        <strong>${found ? '✓ ' + t('found') : '✗ ' + t('missed')}</strong>
                         ${tip}
                     </div>
                 `;
             }).join('');
 
             document.getElementById('tips-panel').classList.add('visible');
-            document.getElementById('feedback-section').classList.add('visible');
 
             // Update buttons
             document.getElementById('check-btn').style.display = 'none';
@@ -1853,7 +2596,7 @@
                     el.style.display = 'none';
                 });
 
-                img.src = slide.correctImage;
+                img.src = slidePath(slide.file + '_correct.jpg');
                 img.onerror = function() {
                     this.src = createCorrectPlaceholder();
                 };
@@ -1865,7 +2608,7 @@
                     el.style.display = '';
                 });
 
-                img.src = slide.image;
+                img.src = slidePath(slide.file + '.jpg');
                 img.onerror = function() {
                     this.src = createPlaceholderImage(currentLevel, currentSlide);
                 };
@@ -1893,6 +2636,13 @@
             return canvas.toDataURL();
         }
 
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                loadSlide();
+            }
+        }
+
         function nextSlide() {
             const level = gameData.levels[currentLevel];
 
@@ -1902,28 +2652,50 @@
             } else {
                 // Level complete
                 completeLevel(currentLevel);
-                totalScore += levelScore;
+                // Recalculate totals from stored per-level results
+                const lr = readProgress().levelResults || {};
+                totalFoundErrors = 0;
+                totalTotalErrors = 0;
+                Object.values(lr).forEach(r => {
+                    totalFoundErrors += r.found || 0;
+                    totalTotalErrors += r.total || 0;
+                });
+                totalScore = totalFoundErrors * 10;
                 saveProgress();
                 showResults();
             }
         }
 
+        function getLevelMessage(levelId, found, total) {
+            const pct = total > 0 ? (found / total) * 100 : 0;
+            const messages = t(`levelMessages.${levelId}`);
+            if (!messages) return t('greatJob');
+            if (pct <= 33) return messages[0];
+            if (pct <= 66) return messages[1];
+            return messages[2];
+        }
+
         function showResults() {
             const allComplete = getCompletedLevels().length === gameData.levels.length;
+            // Show final results only if this was the last level in sequence
+            const isLastLevel = currentLevel === gameData.levels.length - 1;
+            const showFinal = allComplete && isLastLevel;
 
-            if (allComplete) {
+            if (showFinal) {
                 document.getElementById('results-title').textContent = t('allComplete');
-                document.getElementById('results-subtitle').textContent = t('masterDesigner');
+                const overallMsg = getLevelMessage('dataCharts', totalFoundErrors, totalTotalErrors);
+                document.getElementById('results-subtitle').textContent = overallMsg;
                 document.getElementById('continue-btn').style.display = 'none';
                 document.getElementById('secondary-buttons').style.display = 'flex';
                 document.getElementById('play-again-btn').textContent = t('startOver');
                 document.getElementById('back-to-menu-btn').style.display = 'none';
                 document.querySelector('.share-section').style.display = 'block';
-                // Show total score for final results
-                document.getElementById('score-display').textContent = totalScore;
+                // Show total found/total errors
+                document.getElementById('score-display').textContent = `${totalFoundErrors} ${currentLang === 'ru' ? 'из' : 'of'} ${totalTotalErrors}`;
             } else {
                 document.getElementById('results-title').textContent = t('levelComplete');
-                document.getElementById('results-subtitle').textContent = t('greatJob');
+                const level = gameData.levels[currentLevel];
+                document.getElementById('results-subtitle').textContent = getLevelMessage(level.id, levelFoundErrors, levelTotalErrors);
                 document.getElementById('continue-btn').style.display = 'inline-block';
                 document.getElementById('secondary-buttons').style.display = 'flex';
                 document.getElementById('back-to-menu-btn').style.display = 'inline-block';
@@ -1935,11 +2707,11 @@
 
                 document.getElementById('play-again-btn').textContent = t('playAgain');
                 document.querySelector('.share-section').style.display = 'none';
-                // Show level score between levels
-                document.getElementById('score-display').textContent = levelScore;
+                // Show level found/total errors
+                document.getElementById('score-display').textContent = `${levelFoundErrors} ${currentLang === 'ru' ? 'из' : 'of'} ${levelTotalErrors}`;
             }
 
-            document.getElementById('score-label').textContent = t('pointsEarned');
+            document.getElementById('score-label').textContent = currentLang === 'ru' ? 'ошибок найдено' : 'mistakes found';
 
             showScreen('results-screen');
         }
@@ -1949,6 +2721,8 @@
                 currentLevel++;
                 currentSlide = 0;
                 levelScore = 0;
+                levelFoundErrors = 0;
+                levelTotalErrors = 0;
                 loadSlide();
                 showScreen('game-screen');
             } else {
@@ -1966,9 +2740,14 @@
             const allComplete = getCompletedLevels().length === gameData.levels.length;
             if (allComplete) {
                 localStorage.removeItem('visualTrainerProgress');
+                progressCache = null;
                 totalScore = 0;
+                totalFoundErrors = 0;
+                totalTotalErrors = 0;
             }
             levelScore = 0;
+            levelFoundErrors = 0;
+            levelTotalErrors = 0;
             currentSlide = 0;
 
             if (allComplete) {
@@ -2006,14 +2785,13 @@
 
         // ========== SHARING ==========
         function getShareText() {
-            const levelName = t(`levels.${gameData.levels[currentLevel].titleKey}`);
             return currentLang === 'ru'
-                ? `Я прошел уровень "${levelName}" и заработал ${levelScore} очков в Visual Perception Trainer!`
-                : `I completed the "${levelName}" level and scored ${levelScore} points in Visual Perception Trainer!`;
+                ? 'Проверьте, насколько хорошо вы\u00a0замечаете визуальные недочёты в\u00a0презентациях!'
+                : 'Test how well you notice visual flaws in presentations!';
         }
 
         function getShareUrl() {
-            return window.location.href;
+            return window.location.origin + window.location.pathname;
         }
 
         function shareTwitter() {
@@ -2041,25 +2819,52 @@
 
         function copyLink() {
             navigator.clipboard.writeText(getShareUrl()).then(() => {
-                const btn = document.getElementById('copy-link-btn');
+                const btnId = currentLang === 'ru' ? 'copy-link-btn-ru' : 'copy-link-btn';
+                const btn = document.getElementById(btnId);
                 const originalText = btn.textContent;
                 btn.textContent = currentLang === 'ru' ? '✓ Скопировано!' : '✓ Copied!';
                 setTimeout(() => {
                     btn.textContent = originalText;
                 }, 2000);
+            }).catch(() => {
+                showMessage(currentLang === 'ru' ? 'Не\u00a0удалось скопировать ссылку' : 'Could not copy link');
             });
+        }
+
+        function shareNative() {
+            if (navigator.share) {
+                navigator.share({
+                    title: currentLang === 'ru' ? 'Тест на\u00a0визуальное восприятие' : 'Visual Perception Test',
+                    text: getShareText(),
+                    url: getShareUrl()
+                }).catch(() => {});
+            } else {
+                copyLink();
+            }
         }
 
         // ========== INITIALIZATION ==========
         function init() {
+            const params = new URLSearchParams(window.location.search);
             const progress = loadProgress();
-            if (progress.lang) {
+
+            // Language priority: URL param > saved progress > default (en)
+            const urlLang = params.get('lang');
+            if (urlLang === 'ru' || urlLang === 'en') {
+                currentLang = urlLang;
+            } else if (progress.lang) {
                 currentLang = progress.lang;
             }
+
             hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding') === 'true';
 
+            // Update UI for current language
+            updateLangUI();
+            renderLevels();
+            showScreen('levels-screen');
+
             // Activate markup mode if ?mode=markup
-            if (new URLSearchParams(window.location.search).get('mode') === 'markup') {
+            if (params.get('mode') === 'markup') {
                 initMarkupMode();
             }
         }
@@ -2081,6 +2886,8 @@
             let startX = 0, startY = 0;
             let drawEl = null;
             let selectedIndex = -1;
+            const langSelect = document.getElementById('markup-lang');
+            let markupLang = 'ru';
 
             // Populate level selector
             gameData.levels.forEach((level, i) => {
@@ -2090,16 +2897,71 @@
                 levelSelect.appendChild(opt);
             });
 
-            // Populate slide selector (1–10)
-            for (let i = 1; i <= 10; i++) {
-                const opt = document.createElement('option');
-                opt.value = i;
-                opt.textContent = i;
-                slideSelect.appendChild(opt);
+            function populateSlides() {
+                slideSelect.innerHTML = '';
+                const levelIdx = parseInt(levelSelect.value);
+                const level = gameData.levels[levelIdx];
+                level.slides.forEach((s, i) => {
+                    const opt = document.createElement('option');
+                    opt.value = i + 1;
+                    opt.textContent = i + 1;
+                    slideSelect.appendChild(opt);
+                });
             }
 
-            levelSelect.addEventListener('change', updateJSON);
-            slideSelect.addEventListener('change', updateJSON);
+            function loadSlideImage() {
+                const levelIdx = parseInt(levelSelect.value);
+                const slideNum = parseInt(slideSelect.value);
+                const slideIdx = slideNum - 1;
+                const file = `${levelIdx + 1}_${slideNum}`;
+                markupLang = langSelect.value;
+                img.src = `slides/${markupLang}/${file}.jpg`;
+                img.style.display = 'block';
+                document.getElementById('markup-empty').style.display = 'none';
+                // Load existing zones from gameData
+                const slide = gameData.levels[levelIdx].slides[slideIdx];
+                if (slide && slide.zones && slide.zones.length > 0 && slide.zones[0].tipRu !== 'TODO') {
+                    zones = slide.zones.map(z => {
+                        const base = {
+                            x: z.x, y: z.y, width: z.width, height: z.height,
+                            group: z.group || null,
+                            tipRu: z.tipRu || '',
+                            tipEn: z.tipEn || ''
+                        };
+                        // Store en-specific overrides if they exist
+                        if (z.enX != null) base.enX = z.enX;
+                        if (z.enY != null) base.enY = z.enY;
+                        if (z.enWidth != null) base.enWidth = z.enWidth;
+                        if (z.enHeight != null) base.enHeight = z.enHeight;
+                        return base;
+                    });
+                } else {
+                    zones = [];
+                }
+                selectedIndex = -1;
+                renderZones();
+                updateJSON();
+            }
+
+            function switchMarkupLang() {
+                const levelIdx = parseInt(levelSelect.value);
+                const slideNum = parseInt(slideSelect.value);
+                const file = `${levelIdx + 1}_${slideNum}`;
+                markupLang = langSelect.value;
+                img.src = `slides/${markupLang}/${file}.jpg`;
+                renderZones();
+                updateJSON();
+            }
+
+            populateSlides();
+            loadSlideImage();
+
+            levelSelect.addEventListener('change', () => {
+                populateSlides();
+                loadSlideImage();
+            });
+            slideSelect.addEventListener('change', loadSlideImage);
+            langSelect.addEventListener('change', switchMarkupLang);
 
             fileInput.addEventListener('change', (e) => {
                 const file = e.target.files[0];
@@ -2161,6 +3023,16 @@
 
                 if (w < 1 || h < 1) return; // ignore tiny clicks
 
+                if (markupLang === 'en' && selectedIndex >= 0 && selectedIndex < zones.length) {
+                    // In EN mode, drawing on a selected zone replaces its EN coords
+                    zones[selectedIndex].enX = x;
+                    zones[selectedIndex].enY = y;
+                    zones[selectedIndex].enWidth = w;
+                    zones[selectedIndex].enHeight = h;
+                    renderZones();
+                    updateJSON();
+                    return;
+                }
                 zones.push({ x, y, width: w, height: h, group: null, tipRu: '', tipEn: '' });
                 selectedIndex = zones.length - 1;
                 renderZones();
@@ -2180,16 +3052,25 @@
                 updateJSON();
             }
 
+            // Get coordinates for current language
+            function getZoneCoords(z) {
+                if (markupLang === 'en' && z.enX != null) {
+                    return { x: z.enX, y: z.enY, width: z.enWidth, height: z.enHeight };
+                }
+                return { x: z.x, y: z.y, width: z.width, height: z.height };
+            }
+
             function renderZones() {
                 // Render rectangles on image
                 canvas.querySelectorAll('.markup-rect').forEach(el => el.remove());
                 zones.forEach((z, i) => {
+                    const c = getZoneCoords(z);
                     const el = document.createElement('div');
                     el.className = 'markup-rect' + (i === selectedIndex ? ' selected' : '');
-                    el.style.left = z.x + '%';
-                    el.style.top = z.y + '%';
-                    el.style.width = z.width + '%';
-                    el.style.height = z.height + '%';
+                    el.style.left = c.x + '%';
+                    el.style.top = c.y + '%';
+                    el.style.width = c.width + '%';
+                    el.style.height = c.height + '%';
                     const label = document.createElement('span');
                     label.className = 'markup-rect-label';
                     label.textContent = i + 1;
@@ -2199,7 +3080,11 @@
                 });
 
                 // Render zones list
-                zonesList.innerHTML = zones.map((z, i) => `
+                zonesList.innerHTML = zones.map((z, i) => {
+                    const c = getZoneCoords(z);
+                    const hasEnOverride = z.enX != null;
+                    const enLabel = markupLang === 'en' ? (hasEnOverride ? ' ✓ EN' : ' (= RU)') : '';
+                    return `
                     <div class="markup-zone-item ${i === selectedIndex ? 'selected' : ''}" onclick="window._markupSelect(${i})">
                         <span class="markup-zone-num">${i + 1}</span>
                         <div class="markup-zone-fields">
@@ -2208,11 +3093,11 @@
                                 <label style="font-size:0.8rem;white-space:nowrap" onclick="event.stopPropagation()">Группа: <input type="number" min="1" style="width:50px;padding:4px;border:1px solid var(--color-border);border-radius:4px" value="${z.group || ''}" oninput="window._markupUpdate(${i},'group',this.value ? parseInt(this.value) : null)" onclick="event.stopPropagation()"></label>
                             </div>
                             <input type="text" placeholder="Error description (EN)" onclick="event.stopPropagation()" oninput="window._markupUpdate(${i},'tipEn',this.value)" value="${z.tipEn.replace(/"/g, '&quot;')}">
-                            <span class="markup-zone-coords">x: ${z.x}% &nbsp; y: ${z.y}% &nbsp; w: ${z.width}% &nbsp; h: ${z.height}%</span>
+                            <span class="markup-zone-coords">x: ${c.x}% &nbsp; y: ${c.y}% &nbsp; w: ${c.width}% &nbsp; h: ${c.height}%${enLabel}</span>
                         </div>
                         <button class="markup-zone-delete" onclick="event.stopPropagation(); window._markupDelete(${i})" title="Удалить">✕</button>
                     </div>
-                `).join('');
+                `}).join('');
             }
 
             function updateJSON() {
@@ -2223,11 +3108,17 @@
 
                 const output = {
                     _comment: `${translations.ru.levels[level.titleKey]} — слайд ${slideNum}`,
-                    image: `slides/${levelIdx + 1}_${slideNum}.jpg`,
-                    correctImage: `slides/${levelIdx + 1}_${slideNum}_correct.jpg`,
+                    image: `slides/ru/${levelIdx + 1}_${slideNum}.jpg`,
+                    correctImage: `slides/ru/${levelIdx + 1}_${slideNum}_correct.jpg`,
                     zones: zones.map(z => {
                         const entry = { x: z.x, y: z.y, width: z.width, height: z.height };
                         if (z.group != null) entry.group = z.group;
+                        if (z.enX != null) {
+                            entry.enX = z.enX;
+                            entry.enY = z.enY;
+                            entry.enWidth = z.enWidth;
+                            entry.enHeight = z.enHeight;
+                        }
                         entry.tipRu = z.tipRu;
                         entry.tipEn = z.tipEn;
                         return entry;

@@ -5,3 +5,19 @@
 
 # macOS
 .DS_Store
+
+# Backups and archives
+backup/
+archive/
+
+# Keynote files
+*.key
+
+# Review/audit files
+code-review.md
+TECH_AUDIT.md
+technical_analysis.md
+error-descriptions.md
+
+# v2 working copy
+v2/
