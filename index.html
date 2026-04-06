@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Yandex.Metrika counter -->
+    <!-- Yandex.Metrika — loaded only after cookie consent -->
     <script type="text/javascript">
-        (function(m,e,t,r,i,k,a){
-            m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-            m[i].l=1*new Date();
-            for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-            k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-        })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=108413201', 'ym');
-
-        ym(108413201, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+        function loadYandexMetrika() {
+            if (window.ymLoaded) return;
+            window.ymLoaded = true;
+            (function(m,e,t,r,i,k,a){
+                m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+                m[i].l=1*new Date();
+                for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+                k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+            })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=108413201', 'ym');
+            ym(108413201, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+        }
+        // Auto-load if already consented
+        if (localStorage.getItem('cookieConsent') === 'all') {
+            loadYandexMetrika();
+        }
     </script>
-    <noscript><div><img src="https://mc.yandex.ru/watch/108413201" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-    <!-- /Yandex.Metrika counter -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Test how well you notice visual flaws in presentations. 5 levels covering alignment, composition, typography, graphics, and data visualization.">
@@ -253,6 +258,90 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== COOKIE BANNER ========== */
+        .cookie-banner {
+            display: none;
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 6000;
+            background: #151929;
+            padding: 24px 28px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+            border-radius: 16px;
+            max-width: 420px;
+            width: calc(100% - 40px);
+        }
+
+        .cookie-banner.visible {
+            display: block;
+        }
+
+        .cookie-banner-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .cookie-banner-text {
+            flex: 1;
+            font-size: 14px;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .cookie-banner-text a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: underline;
+        }
+
+        .cookie-banner-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .cookie-banner-buttons .cookie-btn {
+            flex: 1;
+            text-align: center;
+        }
+
+        .cookie-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            white-space: nowrap;
+        }
+
+        .cookie-btn-accept {
+            background: #A674FE;
+            color: white;
+        }
+
+        .cookie-btn-accept:hover {
+            background: #9560e8;
+        }
+
+        .cookie-btn-essential {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .cookie-btn-essential:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        @media (max-width: 640px) {
+            .cookie-banner { bottom: 16px; padding: 20px; max-width: 340px; }
+            .cookie-btn { flex: 1; text-align: center; }
         }
 
         /* ========== BURGER MENU (mobile) ========== */
@@ -1672,6 +1761,19 @@
         </div>
     </div>
 
+    <!-- Cookie consent banner -->
+    <div class="cookie-banner" id="cookie-banner">
+        <div class="cookie-banner-inner">
+            <div class="cookie-banner-text" id="cookie-text">
+                We use cookies and analytics (Yandex.Metrika) to improve the site and understand how it's used. Session recordings may be collected. Your test progress is stored locally on your device.
+            </div>
+            <div class="cookie-banner-buttons">
+                <button class="cookie-btn cookie-btn-essential" onclick="acceptCookies('essential')" id="cookie-btn-essential">Essential only</button>
+                <button class="cookie-btn cookie-btn-accept" onclick="acceptCookies('all')" id="cookie-btn-accept">Accept all</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Burger menu panel -->
     <div class="burger-backdrop" id="burger-backdrop" onclick="closeBurger()"></div>
     <div class="burger-panel" id="burger-panel">
@@ -1704,8 +1806,8 @@
                 slideFew: "slides",
                 slideMany: "slides",
                 check: "Check",
-                showCorrect: "Show Correct Version",
-                showOriginal: "Show Original",
+                showCorrect: "Correct version",
+                showOriginal: "Original",
                 next: "Next →",
                 tipsTitle: "Tips for this slide",
                 findMistakes: "Find {n} {plural}",
@@ -1799,8 +1901,8 @@
                 slideFew: "слайда",
                 slideMany: "слайдов",
                 check: "Проверить",
-                showCorrect: "Показать правильный вариант",
-                showOriginal: "Показать оригинал",
+                showCorrect: "Правильный вариант",
+                showOriginal: "Оригинал",
                 next: "Далее →",
                 tipsTitle: "Советы по\u00a0этому слайду",
                 findMistakes: "Найдите {n} {plural}",
@@ -2374,6 +2476,10 @@
                 ? 'Тренажёр визуального восприятия'
                 : 'Visual Perception Trainer';
             document.documentElement.lang = currentLang;
+            // Update cookie banner text if visible
+            if (document.getElementById('cookie-banner').classList.contains('visible')) {
+                updateCookieBannerText();
+            }
         }
 
         function updateUIText() {
@@ -3025,6 +3131,31 @@
             document.getElementById('burger-backdrop').classList.remove('visible');
         }
 
+        // ========== COOKIE CONSENT ==========
+        function showCookieBanner() {
+            const consent = localStorage.getItem('cookieConsent');
+            if (consent) return; // Already decided
+            updateCookieBannerText();
+            document.getElementById('cookie-banner').classList.add('visible');
+        }
+
+        function updateCookieBannerText() {
+            const isRu = currentLang === 'ru';
+            document.getElementById('cookie-text').innerHTML = isRu
+                ? 'Мы\u00a0используем файлы cookie и\u00a0аналитику (Яндекс.Метрика) для улучшения сайта. Могут записываться сессии посещений. Прогресс теста хранится локально на\u00a0вашем устройстве.'
+                : 'We use cookies and analytics (Yandex.Metrika) to\u00a0improve the site and understand how it\u2019s used. Session recordings may be\u00a0collected. Your test progress is\u00a0stored locally on\u00a0your device.';
+            document.getElementById('cookie-btn-essential').textContent = isRu ? 'Только необходимые' : 'Essential only';
+            document.getElementById('cookie-btn-accept').textContent = isRu ? 'Принять все' : 'Accept all';
+        }
+
+        function acceptCookies(level) {
+            localStorage.setItem('cookieConsent', level);
+            document.getElementById('cookie-banner').classList.remove('visible');
+            if (level === 'all') {
+                loadYandexMetrika();
+            }
+        }
+
         // ========== MOBILE POPUP ==========
         function checkMobilePopup() {
             if (window.innerWidth <= 640 && !localStorage.getItem('mobilePopupDismissed')) {
@@ -3069,6 +3200,9 @@
 
             // Show mobile popup on first visit
             checkMobilePopup();
+
+            // Show cookie banner if not yet consented
+            showCookieBanner();
         }
 
         // ========== MARKUP MODE ==========
